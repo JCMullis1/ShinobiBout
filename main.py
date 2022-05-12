@@ -76,30 +76,28 @@ class Bout:
         global selectedAction
         global z
         z = 0
-        choice1 = choiceList[0]
-        choice2 = choiceList[1]
 
-        if actionList[choice1] == 'water' and actionList[choice2] == 'fire':
+        if actionList[choiceList[0]] == 'water' and actionList[choiceList[1]] == 'fire':
             z += 1
-        elif actionList[choice1] == 'fire' and actionList[choice2] == 'water':
+        elif actionList[choiceList[0]] == 'fire' and actionList[choiceList[1]] == 'water':
             z -= 1
-        elif actionList[choice1] == 'fire' and actionList[choice2] == 'wind':
+        elif actionList[choiceList[0]] == 'fire' and actionList[choiceList[1]] == 'wind':
             z += 1
-        elif actionList[choice1] == 'wind' and actionList[choice2] == 'fire':
+        elif actionList[choiceList[0]] == 'wind' and actionList[choiceList[1]] == 'fire':
             z -= 1
-        elif actionList[choice1] == 'wind' and actionList[choice2] == 'lightning':
+        elif actionList[choiceList[0]] == 'wind' and actionList[choiceList[1]] == 'lightning':
             z += 1
-        elif actionList[choice1] == 'lightning' and actionList[choice2] == 'wind':
+        elif actionList[choiceList[0]] == 'lightning' and actionList[choiceList[1]] == 'wind':
             z -= 1
-        elif actionList[choice1] == 'lightning' and actionList[choice2] == 'earth':
+        elif actionList[choiceList[0]] == 'lightning' and actionList[choiceList[1]] == 'earth':
             z += 1
-        elif actionList[choice1] == 'earth' and actionList[choice2] == 'lightning':
+        elif actionList[choiceList[0]] == 'earth' and actionList[choiceList[1]] == 'lightning':
             z -= 1
-        elif actionList[choice1] == 'earth' and actionList[choice2] == 'water':
+        elif actionList[choiceList[0]] == 'earth' and actionList[choiceList[1]] == 'water':
             z += 1
-        elif actionList[choice1] == 'water' and actionList[choice2] == 'earth':
+        elif actionList[choiceList[0]] == 'water' and actionList[choiceList[1]] == 'earth':
             z -= 1
-        elif actionList[choiceList[0]] == actionList[1:5] and actionList[choice2] == 'block':
+        elif actionList[choiceList[0]] == actionList[1:5] and actionList[choiceList[1]] == 'block':
             z += 1
         elif actionList[choiceList[0]] == 'block' and actionList[choiceList[1]] == actionList[1:5]:
             z -= 1
@@ -176,13 +174,16 @@ class Bout:
             print(f"{player1.name}\'s turn")
             print("pick your action")
             print("(A for attack options) or (B for defensive options) or (C for special options)")
-            answer = str(input())
+            answer = str(input('enter here:'))
             letterChoice.append(answer)
             Bout.pickleaction()
             print('')
             print(f"{player2.name}\'s turn")
-            if random.choice(ranLet) == 'A':
-                letterChoice.append(ranLet)
+            print("pick your action")
+            print("(A for attack options) or (B for defensive options) or (C for special options)")
+            answer2 = str(input('enter here:'))
+            if answer2 == 'A':
+                letterChoice.append(answer2)
                 Bout.pickleaction()
                 Bout.rps()
                 Bout.wincon()
@@ -193,8 +194,8 @@ class Bout:
                 elif player2.health < 2:
                     print(f"Game over! {player1.name} wins!")
                     break
-                else:
-                    continue
+            else:
+                continue
 
 
 battle = Bout()
