@@ -1,12 +1,14 @@
 import random
 
 
+# defining players it's not in depth at all at the moment
 class Shinobi:
     def __init__(self, name=str, element=str, health=int):
         self.name = name
         self.element = element
         self.health = health
 
+    # this just defines the players used in the demo of the game
     def setplayers(self):
         name1 = str(input('enter name:'))
         element1 = str(input('element:'))
@@ -25,21 +27,17 @@ class Shinobi:
         return player2
 
 
+# the main class with all the stuff happening, it's to define fights and the functions are what regulate it
 class Bout:
     def __init__(self):
         return
 
     global choiceList
     global letterChoice
-    global actionTuple
+    global actionList
     letterChoice = []
     choiceList = []
-    actionTuple = ('water', 'earth', 'fire', 'wind', 'lightning', 'attack', 'block', 'dodge', 'counter', 'summon')
-
-    # changed for clear method but still make some dynamic gameplay and if there are more players you could make the
-    # check a variable depending on how many players are added to the game remember to make it where the choiceList
-    # adds a Null element to make sure that if two players pick different choices but player 2 did block it allows
-    # block without fetching the 0 position
+    actionList = ['water', 'earth', 'fire', 'wind', 'lightning', 'attack', 'block', 'dodge', 'counter', 'summon']
 
     # picks an element and adds it to a list used for figuring out who won the game
     @staticmethod
@@ -48,9 +46,7 @@ class Bout:
         global choiceList
         global letterChoice
 
-        # figure out a way to go back to the selection so they aren't stuck if they made a mistake
-        # potentially make it give an answer that if it is equal to it will send it back to the while loop returning them to the previous if statement
-
+        # this just checks the answer given in the round method, depending on the answer it changes the options given to the player
         if letterChoice[0] == 'A':
             print("Choose your attack!")
             print("0(water) 1(earth) 2(fire) 3(wind) 4(lightning) 5(basic attack)")
@@ -76,52 +72,51 @@ class Bout:
     @staticmethod
     def rps():
         global choiceList
-        global actionTuple
+        global actionList
         global selectedAction
         global z
         z = 0
 
-        if actionTuple[choiceList[0]] == 'water' and actionTuple[choiceList[1]] == 'fire':
+        if actionList[choiceList[0]] == 'water' and actionList[choiceList[1]] == 'fire':
             z += 1
-        elif actionTuple[choiceList[0]] == 'fire' and actionTuple[choiceList[1]] == 'water':
+        elif actionList[choiceList[0]] == 'fire' and actionList[choiceList[1]] == 'water':
             z -= 1
-        elif actionTuple[choiceList[0]] == 'fire' and actionTuple[choiceList[1]] == 'wind':
+        elif actionList[choiceList[0]] == 'fire' and actionList[choiceList[1]] == 'wind':
             z += 1
-        elif actionTuple[choiceList[0]] == 'wind' and actionTuple[choiceList[1]] == 'fire':
+        elif actionList[choiceList[0]] == 'wind' and actionList[choiceList[1]] == 'fire':
             z -= 1
-        elif actionTuple[choiceList[0]] == 'wind' and actionTuple[choiceList[1]] == 'lightning':
+        elif actionList[choiceList[0]] == 'wind' and actionList[choiceList[1]] == 'lightning':
             z += 1
-        elif actionTuple[choiceList[0]] == 'lightning' and actionTuple[choiceList[1]] == 'wind':
+        elif actionList[choiceList[0]] == 'lightning' and actionList[choiceList[1]] == 'wind':
             z -= 1
-        elif actionTuple[choiceList[0]] == 'lightning' and actionTuple[choiceList[1]] == 'earth':
+        elif actionList[choiceList[0]] == 'lightning' and actionList[choiceList[1]] == 'earth':
             z += 1
-        elif actionTuple[choiceList[0]] == 'earth' and actionTuple[choiceList[1]] == 'lightning':
+        elif actionList[choiceList[0]] == 'earth' and actionList[choiceList[1]] == 'lightning':
             z -= 1
-        elif actionTuple[choiceList[0]] == 'earth' and actionTuple[choiceList[1]] == 'water':
+        elif actionList[choiceList[0]] == 'earth' and actionList[choiceList[1]] == 'water':
             z += 1
-        elif actionTuple[choiceList[0]] == 'water' and actionTuple[choiceList[1]] == 'earth':
+        elif actionList[choiceList[0]] == 'water' and actionList[choiceList[1]] == 'earth':
             z -= 1
-        elif actionTuple[choiceList[0]] == actionTuple[1:5] and actionTuple[choiceList[1]] == 'block':
+        elif actionList[choiceList[0]] == actionList[1:5] and actionList[choiceList[1]] == 'block':
             z += 1
-        elif actionTuple[choiceList[0]] == 'block' and actionTuple[choiceList[1]] == actionTuple[1:5]:
+        elif actionList[choiceList[0]] == 'block' and actionList[choiceList[1]] == actionList[1:5]:
             z -= 1
         return
-
 
     # wincon checks the win condition 'z' to see who won the match
     @staticmethod
     def wincon():
         global player1
         global player2
-        global actionTuple
+        global actionList
 
         if z == 1:
             print(''
                   '')
             print(f"{player1.name} has won the round!")
-            print(f"{player1.name} chose {actionTuple[choiceList[0]]} and {player2.name} chose {actionTuple[choiceList[1]]}")
+            print(f"{player1.name} chose {actionList[choiceList[0]]} and {player2.name} chose {actionList[choiceList[1]]}")
 
-            if player1.element == actionTuple[choiceList[0]]:
+            if player1.element == actionList[choiceList[0]]:
                 player2.health -= 20
                 print(f"{player1.name} is now at {player1.health} health! And {player2.name} is now at "
                       f"{player2.health} health!")
@@ -137,9 +132,9 @@ class Bout:
             print(''
                   '')
             print(f"{player2.name} has won the round!")
-            print(f"{player1.name} chose {actionTuple[choiceList[0]]} and {player2.name} chose {actionTuple[choiceList[1]]}")
+            print(f"{player1.name} chose {actionList[choiceList[0]]} and {player2.name} chose {actionList[choiceList[1]]}")
 
-            if player2.element == actionTuple[choiceList[1]]:
+            if player2.element == actionList[choiceList[1]]:
                 player1.health -= 20
                 print(f"{player1.name} is now at {player1.health} health! And {player2.name} is now at "
                       f"{player2.health} health!")
@@ -155,7 +150,7 @@ class Bout:
             print(''
                   '')
             print('The round is undecided!')
-            print(f"{player1.name} chose {actionTuple[choiceList[0]]} and {player2.name} chose {actionTuple[choiceList[1]]}")
+            print(f"{player1.name} chose {actionList[choiceList[0]]} and {player2.name} chose {actionList[choiceList[1]]}")
 
             player1.health -= 10
             player2.health -= 10
@@ -163,7 +158,6 @@ class Bout:
             print(f"{player1.name} is now at {player1.health} health! And {player2.name} is now at "
                   f"{player2.health} health!")
             print('')
-
 
     # game loop and turn system
     @staticmethod
@@ -174,7 +168,7 @@ class Bout:
         global player1
         global player2
         global letterChoice
-        global actionTuple
+        global actionList
 
         while player1.health or player2.health > 0:
             print(f"{player1.name}\'s turn")
@@ -199,9 +193,6 @@ class Bout:
                     break
                 else:
                     continue
-
-                    # player 1 chooses block
-            # player 1 chooses action
 
 
 battle = Bout()
