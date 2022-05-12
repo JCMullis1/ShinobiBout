@@ -76,28 +76,30 @@ class Bout:
         global selectedAction
         global z
         z = 0
+        choice1 = choiceList[0]
+        choice2 = choiceList[1]
 
-        if actionList[choiceList[0]] == 'water' and actionList[choiceList[1]] == 'fire':
+        if actionList[choice1] == 'water' and actionList[choice2] == 'fire':
             z += 1
-        elif actionList[choiceList[0]] == 'fire' and actionList[choiceList[1]] == 'water':
+        elif actionList[choice1] == 'fire' and actionList[choice2] == 'water':
             z -= 1
-        elif actionList[choiceList[0]] == 'fire' and actionList[choiceList[1]] == 'wind':
+        elif actionList[choice1] == 'fire' and actionList[choice2] == 'wind':
             z += 1
-        elif actionList[choiceList[0]] == 'wind' and actionList[choiceList[1]] == 'fire':
+        elif actionList[choice1] == 'wind' and actionList[choice2] == 'fire':
             z -= 1
-        elif actionList[choiceList[0]] == 'wind' and actionList[choiceList[1]] == 'lightning':
+        elif actionList[choice1] == 'wind' and actionList[choice2] == 'lightning':
             z += 1
-        elif actionList[choiceList[0]] == 'lightning' and actionList[choiceList[1]] == 'wind':
+        elif actionList[choice1] == 'lightning' and actionList[choice2] == 'wind':
             z -= 1
-        elif actionList[choiceList[0]] == 'lightning' and actionList[choiceList[1]] == 'earth':
+        elif actionList[choice1] == 'lightning' and actionList[choice2] == 'earth':
             z += 1
-        elif actionList[choiceList[0]] == 'earth' and actionList[choiceList[1]] == 'lightning':
+        elif actionList[choice1] == 'earth' and actionList[choice2] == 'lightning':
             z -= 1
-        elif actionList[choiceList[0]] == 'earth' and actionList[choiceList[1]] == 'water':
+        elif actionList[choice1] == 'earth' and actionList[choice2] == 'water':
             z += 1
-        elif actionList[choiceList[0]] == 'water' and actionList[choiceList[1]] == 'earth':
+        elif actionList[choice1] == 'water' and actionList[choice2] == 'earth':
             z -= 1
-        elif actionList[choiceList[0]] == actionList[1:5] and actionList[choiceList[1]] == 'block':
+        elif actionList[choiceList[0]] == actionList[1:5] and actionList[choice2] == 'block':
             z += 1
         elif actionList[choiceList[0]] == 'block' and actionList[choiceList[1]] == actionList[1:5]:
             z -= 1
