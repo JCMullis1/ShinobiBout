@@ -1,39 +1,30 @@
 
-# defining players it's not in depth at all at the moment
+# defining players
 class Shinobi:
-    def __init__(self, name=str, element=str, health=int, chakra=int):
+    def __init__(self, name=str, element=str, health=int, chakra=int, choice=str):
         self.name = name
         self.element = element
         self.health = health
         self.chakra = chakra
+        self.choice = choice
 
     # this just defines the players used in the demo of the game
-    def setplayers(self):
-        name1 = str(input('enter name:'))
-        element1 = str(input('element:'))
+    @staticmethod
+    def setplayers():
+        global player, choice, p
+        playuhs = int((input('How many players will be fighting today?:')))
+        print(f"there will be {playuhs} players")
+        playhealth = int(input('how much health will each player have?:'))
+        playchakra = int(input('and how much chakra will each player have?'))
+        y = 0
+        p = 1
 
-        print('')
-
-        name2 = str(input('enter name:'))
-        element2 = str(input('element:'))
-
-        print('')
-
-        health = int(input('enter health:'))
-        health1 = int(health)
-        health2 = int(health)
-
-        print('')
-
-        chakra = int(input('enter chakra:'))
-        chakra1 = int(chakra)
-        chakra2 = int(chakra)
-
-        global player1, player2
-
-        player1 = Shinobi(name1, element1, health1, chakra1)
-        player2 = Shinobi(name2, element2, health2, chakra2)
-        return player1, player2
+        while y != playuhs:
+            player = f"player{p}"
+            globals()[player] = Shinobi(name=str(input('enter name:')), element=str(input('enter element:')),
+                                        health=playhealth, chakra=playchakra, choice=str)
+            p += 1
+            y += 1
 
 
 # the main class with all the stuff happening, it's to define fights and the functions are what regulate it
@@ -41,113 +32,138 @@ class Bout:
     def __init__(self):
         return
 
-    global choiceList, letterChoice, actionList, actionDict
+    global letterChoice
     letterChoice = []
-    choiceList = []
-    actionList = ['water', 'earth', 'fire', 'wind', 'lightning', 'attack', 'block', 'dodge', 'counter', 'summon']
+
+    @staticmethod
+    def chakraloss():
+        global letterChoice, player
 
     # picks an element and adds it to a list used for figuring out who won the game
     @staticmethod
     def pickleaction():
-        global selectedAction, choiceList, letterChoice
+        global selectedAction, letterChoice, player, choice, p
 
-        # this just checks the answer given in the round method, depending on the answer it changes the options given to the player
-        if letterChoice[0] == 'A':
-            print("Choose your attack!")
-            print("0(water) 1(earth) 2(fire) 3(wind) 4(lightning) 5(basic attack)")
-            selectedAction = int((input("enter here:")))
-            letterChoice.clear()
-            choiceList.append(selectedAction)
+        # this just checks the answer given in the round method, depending on the answer it changes the options given
+        # to the player
+        if len(letterChoice) == 2:
+            if letterChoice[1] == 'A':
+                print("Choose your attack!")
+                print("(water) (earth) (fire) (wind) (lightning) (basic attack)")
+                selectedAction = str((input("enter here:")))
+                player2.choice = str(selectedAction)
+                return player2.choice
 
-        elif letterChoice[0] == 'B':
-            print("Choose your defense!")
-            print("6(block) 7(dodge) 8(counter)")
-            selectedAction = int((input("enter here:")))
-            letterChoice.clear()
-            choiceList.append(selectedAction)
+            elif letterChoice[1] == 'B':
+                print("Choose your defense!")
+                print("(block) (dodge) (counter)")
+                selectedAction = str((input("enter here:")))
+                player2.choice = str(selectedAction)
+                return player2.choice
 
-        elif letterChoice[0] == 'C':
-            print("Choose your special action!")
-            print("9(summon)")
-            selectedAction = int((input("enter here:")))
-            letterChoice.clear()
-            choiceList.append(selectedAction)
+            elif letterChoice[1] == 'C':
+                print("Choose your special action!")
+                print("(summon)")
+                selectedAction = str((input("enter here:")))
+                player2.choice = str(selectedAction)
+                return player2.choice
+        else:
+            if letterChoice[0] == 'A':
+                print("Choose your attack!")
+                print("(water) (earth) (fire) (wind) (lightning) (basic attack)")
+                selectedAction = str((input("enter here:")))
+                player1.choice = str(selectedAction)
+                return player1.choice
+
+            elif letterChoice[0] == 'B':
+                print("Choose your defense!")
+                print("6(block) 7(dodge) 8(counter)")
+                selectedAction = str((input("enter here:")))
+                player1.choice = str(selectedAction)
+                return player1.choice
+
+            elif letterChoice[0] == 'C':
+                print("Choose your special action!")
+                print("9(summon)")
+                selectedAction = str((input("enter here:")))
+                player1.choice = str(selectedAction)
+                return player1.choice
 
     # compares the choices of the players to find a suitable output
     @staticmethod
     def rps():
-        global choiceList, actionDict, z, selectedAction, actionList
+        global z, player, choice, p
         z = 0
 
-        if z < 0:
-            z += 1
-        elif z > 0:
-            z -= 1
-        else:
-            pass
-
         # element checks
-        if actionList[choiceList[0]] == 'water' and actionList[choiceList[1]] == 'fire':
+        if player1.choice == 'water' and player2.choice == 'fire':
             z += 1
-        elif actionList[choiceList[0]] == 'fire' and actionList[choiceList[1]] == 'water':
+        elif player1.choice == 'fire' and player2.choice == 'water':
             z -= 1
-        elif actionList[choiceList[0]] == 'fire' and actionList[choiceList[1]] == 'wind':
+        elif player1.choice == 'fire' and player2.choice == 'wind':
             z += 1
-        elif actionList[choiceList[0]] == 'wind' and actionList[choiceList[1]] == 'fire':
+        elif player1.choice == 'wind' and player2.choice == 'fire':
             z -= 1
-        elif actionList[choiceList[0]] == 'wind' and actionList[choiceList[1]] == 'lightning':
+        elif player1.choice == 'wind' and player2.choice == 'lightning':
             z += 1
-        elif actionList[choiceList[0]] == 'lightning' and actionList[choiceList[1]] == 'wind':
+        elif player1.choice == 'lightning' and player2.choice == 'wind':
             z -= 1
-        elif actionList[choiceList[0]] == 'lightning' and actionList[choiceList[1]] == 'earth':
+        elif player1.choice == 'lightning' and player2.choice == 'earth':
             z += 1
-        elif actionList[choiceList[0]] == 'earth' and actionList[choiceList[1]] == 'lightning':
+        elif player1.choice == 'earth' and player2.choice == 'lightning':
             z -= 1
-        elif actionList[choiceList[0]] == 'earth' and actionList[choiceList[1]] == 'water':
+        elif player1.choice == 'earth' and player2.choice == 'water':
             z += 1
-        elif actionList[choiceList[0]] == 'water' and actionList[choiceList[1]] == 'earth':
+        elif player1.choice == 'water' and player2.choice == 'earth':
             z -= 1
+        # basic attack checks
+
         # block checks
-        elif actionList[choiceList[0]] == 'water' and actionList[choiceList[1]] == 'block':
+        elif player1.choice == 'water' and player2.choice == 'block':
             z += 1
-        elif actionList[choiceList[0]] == 'block' and actionList[choiceList[1]] == 'water':
+        elif player1.choice == 'block' and player2.choice == 'water':
             z -= 1
-        elif actionList[choiceList[0]] == 'earth' and actionList[choiceList[1]] == 'block':
+        elif player1.choice == 'earth' and player2.choice == 'block':
             z += 1
-        elif actionList[choiceList[0]] == 'block' and actionList[choiceList[1]] == 'earth':
+        elif player1.choice == 'block' and player2.choice == 'earth':
             z -= 1
-        elif actionList[choiceList[0]] == 'fire' and actionList[choiceList[1]] == 'block':
+        elif player1.choice == 'fire' and player2.choice == 'block':
             z += 1
-        elif actionList[choiceList[0]] == 'block' and actionList[choiceList[1]] == 'fire':
+        elif player1.choice == 'block' and player2.choice == 'fire':
             z -= 1
-        elif actionList[choiceList[0]] == 'wind' and actionList[choiceList[1]] == 'block':
+        elif player1.choice == 'wind' and player2.choice == 'block':
             z += 1
-        elif actionList[choiceList[0]] == 'block' and actionList[choiceList[1]] == 'wind':
+        elif player1.choice == 'block' and player2.choice == 'wind':
             z -= 1
-        elif actionList[choiceList[0]] == 'lightning' and actionList[choiceList[1]] == 'block':
+        elif player1.choice == 'lightning' and player2.choice == 'block':
             z += 1
-        elif actionList[choiceList[0]] == 'block' and actionList[choiceList[1]] == 'lightning':
+        elif player1.choice == 'block' and player2.choice == 'lightning':
             z -= 1
         # dodge checks
-        elif actionList[choiceList[0]] == 'water' and actionList[choiceList[1]] == 'dodge':
+        elif player1.choice == 'water' and player2.choice == 'dodge':
             z -= 1
-        elif actionList[choiceList[0]] == 'dodge' and actionList[choiceList[1]] == 'water':
+        elif player1.choice == 'dodge' and player2.choice == 'water':
             z += 1
-        elif actionList[choiceList[0]] == 'earth' and actionList[choiceList[1]] == 'dodge':
+        elif player1.choice == 'earth' and player2.choice == 'dodge':
             z -= 1
-        elif actionList[choiceList[0]] == 'dodge' and actionList[choiceList[1]] == 'earth':
+        elif player1.choice == 'dodge' and player2.choice == 'earth':
             z += 1
-        elif actionList[choiceList[0]] == 'fire' and actionList[choiceList[1]] == 'dodge':
+        elif player1.choice == 'fire' and player2.choice == 'dodge':
             z -= 1
-        elif actionList[choiceList[0]] == 'dodge' and actionList[choiceList[1]] == 'fire':
+        elif player1.choice == 'dodge' and player2.choice == 'fire':
             z += 1
-        elif actionList[choiceList[0]] == 'wind' and actionList[choiceList[1]] == 'dodge':
+        elif player1.choice == 'wind' and player2.choice == 'dodge':
             z -= 1
-        elif actionList[choiceList[0]] == 'dodge' and actionList[choiceList[1]] == 'wind':
+        elif player1.choice == 'dodge' and player2.choice == 'wind':
             z += 1
-        elif actionList[choiceList[0]] == 'lightning' and actionList[choiceList[1]] == 'dodge':
+        elif player1.choice == 'lightning' and player2.choice == 'dodge':
             z -= 1
-        elif actionList[choiceList[0]] == 'dodge' and actionList[choiceList[1]] == 'lightning':
+        elif player1.choice == 'dodge' and player2.choice == 'lightning':
+            z += 1
+        # counter checks
+        elif player1.choice == 'counter' and player2.choice == 'water':
+            z -= 1
+        elif player1.choice == 'water' and player2.choice == 'counter':
             z += 1
         # print(z) this print statement is used for debugging
         return
@@ -155,16 +171,16 @@ class Bout:
     # wincon checks the win condition 'z' to see who won the match
     @staticmethod
     def wincon():
-        global player1, player2, actionList
+        global player, choice, p, z
 
         if z == 1:
-            # print(z) this print statement is used for debugging
+            # print(z) debugging
             print(''
                   '')
             print(f"{player1.name} has won the round!")
-            print(f"{player1.name} chose {actionList[choiceList[0]]} and {player2.name} chose {actionList[choiceList[1]]}")
+            print(f"{player1.name} chose {player1.choice} and {player2.name} chose {player2.choice}")
 
-            if player1.element == actionList[choiceList[0]]:
+            if player1.element == player1.choice:
                 player2.health -= 20
                 print(f"{player1.name} is now at {player1.health} health! And {player2.name} is now at "
                       f"{player2.health} health!")
@@ -177,13 +193,13 @@ class Bout:
                 print('')
 
         elif z == -1:
-            # print(z) this print statement is used for debugging
+            # print(z) debugging
             print(''
                   '')
             print(f"{player2.name} has won the round!")
-            print(f"{player1.name} chose {actionList[choiceList[0]]} and {player2.name} chose {actionList[choiceList[1]]}")
+            print(f"{player1.name} chose {player1.choice} and {player2.name} chose {player2.choice}")
 
-            if player2.element == actionList[choiceList[1]]:
+            if player2.element == player2.choice:
                 player1.health -= 20
                 print(f"{player1.name} is now at {player1.health} health! And {player2.name} is now at "
                       f"{player2.health} health!")
@@ -196,11 +212,11 @@ class Bout:
                 print('')
 
         else:
-            if actionList[choiceList[0]] and actionList[choiceList[1]] == 'block':
+            if player1.choice and player2.choice == 'block':
                 print(''
                       '')
                 print('The round is undecided!')
-                print(f"{player1.name} chose {actionList[choiceList[0]]} and {player2.name} chose {actionList[choiceList[1]]}")
+                print(f"{player1.name} chose {player1.choice} and {player2.name} chose {player2.choice}")
 
                 print('But nothing happened.')
 
@@ -212,7 +228,7 @@ class Bout:
                 print(''
                       '')
                 print('The round is undecided!')
-                print(f"{player1.name} chose {actionList[choiceList[0]]} and {player2.name} chose {actionList[choiceList[1]]}")
+                print(f"{player1.name} chose {player1.choice} and {player2.name} chose {player2.choice}")
 
                 player1.health -= 10
                 player2.health -= 10
@@ -224,18 +240,21 @@ class Bout:
     # game loop and turn system
     @staticmethod
     def round():
-        players = Shinobi
-        players.setplayers(players)
-        global player1, player2, letterChoice, actionList
+        Shinobi.setplayers()
+        global player, letterChoice, p, choice
 
         while player1.health or player2.health > 0:
+            if len(letterChoice) == 2:
+                letterChoice.clear()
             print(f"{player1.name}\'s turn")
             print("pick your action")
             print("(A for attack options) or (B for defensive options) or (C for special options)")
             answer = str(input('enter here:'))
             letterChoice.append(answer)
             Bout.pickleaction()
+
             print('')
+
             print(f"{player2.name}\'s turn")
             print("pick your action")
             print("(A for attack options) or (B for defensive options) or (C for special options)")
@@ -244,8 +263,7 @@ class Bout:
             Bout.pickleaction()
             Bout.rps()
             Bout.wincon()
-            print(choiceList)
-            choiceList.clear()
+
             if player1.health < 2:
                 print(f"Game over! {player2.name} wins!")
                 break
@@ -256,5 +274,4 @@ class Bout:
                 continue
 
 
-battle = Bout()
-battle.round()
+Bout.round()
