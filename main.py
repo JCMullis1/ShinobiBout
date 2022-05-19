@@ -1,4 +1,16 @@
 
+bfSize = int(input('How big shall the battlefield be? The area will be your input squared:'))
+# call y before x I think it matters
+
+
+# # If you want to take n lines of input where each line contains m space separated integers like:
+#
+# a = []  # declaration
+# for i in range(0, bfSize):  # where n is the no. of lines you want
+#     a.append([int(j) for  j in a])  # for taking m space separated integers as input
+
+print(a)
+
 # defining players
 class Shinobi:
     def __init__(self, name=str, element=str, health=int, chakra=int, choice=str):
@@ -29,8 +41,9 @@ class Shinobi:
 
 # the main class with all the stuff happening, it's to define fights and the functions are what regulate it
 class Bout:
-    def __init__(self):
-        return
+    def __init__(self, x=int(bfSize), y=int(bfSize)):
+        Bout.x = x
+        Bout.y = y
 
     global letterChoice
     letterChoice = []
@@ -49,42 +62,42 @@ class Bout:
         if len(letterChoice) == 2:
             if letterChoice[1] == 'A':
                 print("Choose your attack!")
-                print("(water) (earth) (fire) (wind) (lightning) (basic attack)")
+                print("(water) (earth) (fire) (wind) (lightning) (attack)")
                 selectedAction = str((input("enter here:")))
                 player2.choice = str(selectedAction)
                 return player2.choice
 
-            elif letterChoice[1] == 'B':
+            if letterChoice[1] == 'B':
                 print("Choose your defense!")
                 print("(block) (dodge) (counter)")
                 selectedAction = str((input("enter here:")))
                 player2.choice = str(selectedAction)
                 return player2.choice
 
-            elif letterChoice[1] == 'C':
+            if letterChoice[1] == 'C':
                 print("Choose your special action!")
-                print("(summon)")
+                print("(summon) (guard break)")
                 selectedAction = str((input("enter here:")))
                 player2.choice = str(selectedAction)
                 return player2.choice
         else:
             if letterChoice[0] == 'A':
                 print("Choose your attack!")
-                print("(water) (earth) (fire) (wind) (lightning) (basic attack)")
+                print("(water) (earth) (fire) (wind) (lightning) (attack)")
                 selectedAction = str((input("enter here:")))
                 player1.choice = str(selectedAction)
                 return player1.choice
 
-            elif letterChoice[0] == 'B':
+            if letterChoice[0] == 'B':
                 print("Choose your defense!")
-                print("6(block) 7(dodge) 8(counter)")
+                print("(block) (dodge) (counter)")
                 selectedAction = str((input("enter here:")))
                 player1.choice = str(selectedAction)
                 return player1.choice
 
-            elif letterChoice[0] == 'C':
+            if letterChoice[0] == 'C':
                 print("Choose your special action!")
-                print("9(summon)")
+                print("(summon) (guard break)")
                 selectedAction = str((input("enter here:")))
                 player1.choice = str(selectedAction)
                 return player1.choice
@@ -116,7 +129,36 @@ class Bout:
             z += 1
         elif player1.choice == 'water' and player2.choice == 'earth':
             z -= 1
+
         # basic attack checks
+        elif player1.choice == 'water' and player2.choice == 'attack':
+            z += 1
+        elif player1.choice == 'attack' and player2.choice == 'water':
+            z -= 1
+        elif player1.choice == 'fire' and player2.choice == 'attack':
+            z += 1
+        elif player1.choice == 'attack' and player2.choice == 'fire':
+            z -= 1
+        elif player1.choice == 'wind' and player2.choice == 'attack':
+            z += 1
+        elif player1.choice == 'attack' and player2.choice == 'wind':
+            z -= 1
+        elif player1.choice == 'lightning' and player2.choice == 'attack':
+            z += 1
+        elif player1.choice == 'attack' and player2.choice == 'lightning':
+            z -= 1
+        elif player1.choice == 'earth' and player2.choice == 'attack':
+            z += 1
+        elif player1.choice == 'attack' and player2.choice == 'earth':
+            z -= 1
+        elif player1.choice == 'block' and player2.choice == 'attack':
+            z += 1
+        elif player1.choice == 'attack' and player2.choice == 'block':
+            z -= 1
+        elif player1.choice == 'counter' and player2.choice == 'attack':
+            z += 1
+        elif player1.choice == 'attack' and player2.choice == 'counter':
+            z -= 1
 
         # block checks
         elif player1.choice == 'water' and player2.choice == 'block':
@@ -139,6 +181,7 @@ class Bout:
             z += 1
         elif player1.choice == 'block' and player2.choice == 'lightning':
             z -= 1
+
         # dodge checks
         elif player1.choice == 'water' and player2.choice == 'dodge':
             z -= 1
@@ -160,11 +203,37 @@ class Bout:
             z -= 1
         elif player1.choice == 'dodge' and player2.choice == 'lightning':
             z += 1
+
         # counter checks
         elif player1.choice == 'counter' and player2.choice == 'water':
             z -= 1
         elif player1.choice == 'water' and player2.choice == 'counter':
             z += 1
+        elif player1.choice == 'counter' and player2.choice == 'fire':
+            z -= 1
+        elif player1.choice == 'fire' and player2.choice == 'counter':
+            z += 1
+        elif player1.choice == 'counter' and player2.choice == 'wind':
+            z -= 1
+        elif player1.choice == 'wind' and player2.choice == 'counter':
+            z += 1
+        elif player1.choice == 'counter' and player2.choice == 'lightning':
+            z -= 1
+        elif player1.choice == 'lightning' and player2.choice == 'counter':
+            z += 1
+        elif player1.choice == 'counter' and player2.choice == 'earth':
+            z -= 1
+        elif player1.choice == 'earth' and player2.choice == 'counter':
+            z += 1
+        elif player1.choice == 'counter' and player2.choice == 'block':
+            z -= 1
+        elif player1.choice == 'wind' and player2.choice == 'counter':
+            z += 1
+        elif player1.choice == 'counter' and player2.choice == 'block':
+            z -= 1
+        elif player1.choice == 'block' and player2.choice == 'counter':
+            z += 1
+
         # print(z) this print statement is used for debugging
         return
 
