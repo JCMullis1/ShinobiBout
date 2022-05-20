@@ -29,5 +29,5 @@ make the summon system work(not started
 --
 make the chakra cost system(not started
 --
-make more than 2 players per game work(not started
+make more than 2 players per game work(working
 --
