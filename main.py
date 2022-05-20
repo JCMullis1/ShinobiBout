@@ -1,15 +1,9 @@
 
 bfSize = int(input('How big shall the battlefield be? The area will be your input squared:'))
+
+
 # call y before x I think it matters
 
-
-# # If you want to take n lines of input where each line contains m space separated integers like:
-#
-# a = []  # declaration
-# for i in range(0, bfSize):  # where n is the no. of lines you want
-#     a.append([int(j) for  j in a])  # for taking m space separated integers as input
-
-print(a)
 
 # defining players
 class Shinobi:
@@ -343,4 +337,12 @@ class Bout:
                 continue
 
 
+# making the dynamic matrix
+n = int(bfSize+1)
+b = []
+b.extend(range(n))
+a = list([b]*bfSize)
+print(a)
+
 Bout.round()
+
