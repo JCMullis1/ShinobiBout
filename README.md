@@ -1,7 +1,7 @@
 This is ShinobiBout, a text terminal fighting game,
 the objective is to get the enemy's health to hit 0 
 
-current version 0.5 pre-alpha
+current version 0.55 pre-alpha
 
 
 LIST:
@@ -23,11 +23,13 @@ none currently but that's very likely to change soon
 //
 TODO:
 --
-add the remaining actions to the game(working
+add the remaining actions to the game(finished temporarily
 --
 make the summon system work(not started
 --
-make the chakra cost system(not started
+make the chakra cost system(finished temporarily
 --
-make more than 2 players per game work(working
+make more than 2 players per game work(finished
+--
+finish the alpha version of the game(started
 --
