@@ -1,4 +1,3 @@
-# battle field creation using matrix
 bfSize = int(input('How big shall the battlefield be? The area will be your input squared: '))
 print('')
 coords = [[None] * bfSize for _ in range(bfSize)]
@@ -37,7 +36,6 @@ class Shinobi:
         self.targetX = targetX
         self.targetY = targetY
 
-    # places players on the map
     @staticmethod
     def placeplayers():
         y = 0
@@ -71,10 +69,12 @@ class Shinobi:
             print('')
             playID += 1
 
-global playuhs
+
 Shinobi.setplayers()
-Shinobi.placeplayers()
 # game loop
+global playuhs
+Shinobi.placeplayers()
+print(coords)
 while True:
     elementString = "(water) (earth) (fire) (wind) (lightning) (attack) (block) (dodge) (counter) (guard " \
                     "break) (summon)"
@@ -99,7 +99,6 @@ while True:
             playerList[i].chakra -= 10
         print('')
 
-    # turn execution
     tempList = []
     for e in range(len(playerList)):
         tempList.clear()
