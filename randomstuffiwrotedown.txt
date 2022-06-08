@@ -1,0 +1,37 @@
+                    attacker won and got crit
+
+                    print(f"{playerList[e].name} has won the bout!")
+                    print(f"{playerList[e].name} chose {playerList[e].choice}, and {tempList[0].name} chose {tempList[0].choice}!")
+                    print(f"{playerList[e].name} is now at {playerList[e].health}, and {tempList[0].name} is at {tempList[0].health}!")
+                    print('')
+
+                    attacker won no crit --v
+
+                    print(f"{playerList[e].name} has won the bout!")
+                    print(f"{playerList[e].name} chose {playerList[e].choice}, and {tempList[0].name} chose {tempList[0].choice}!")
+                    print(f"{playerList[e].name} is now at {playerList[e].health}, and {tempList[0].name} is at {tempList[0].health}!")
+                    print('')
+
+                    defender won with crit
+
+                    print(f"{tempList[0].name} has won the bout!")
+                    print(f"{tempList[0].name} chose {tempList[0].choice}, and {playerList[e].name} chose {playerList[e].choice}!")
+                    print(f"{tempList[0].name} is now at {tempList[0].health}, and {playerList[e].name} is at {playerList[e].health}!")
+                    print('')
+
+                    defender won without crit
+
+                    print(f"{tempList[0].name} has won the bout!")
+                    print(f"{tempList[0].name} chose {tempList[0].choice}, and {playerList[e].name} chose {playerList[e].choice}!")
+                    print(f"{tempList[0].name} is now at {tempList[0].health}, and {playerList[e].name} is at {playerList[e].health}!")
+                    print('')
+
+                    nobody won but both blocked
+
+                    print("Both Shinobi blocked and so nothing happened")
+
+                    stalemate
+
+                    print("The bout ended in stalemate!")
+                    print(f"{playerList[e].name} chose {playerList[e].choice}, and {tempList[0].name} chose {tempList[0].choice}!")
+                    print(f"{tempList[0].name} is now at {tempList[0].health}, and {playerList[e].name} is at {playerList[e].health}!")
