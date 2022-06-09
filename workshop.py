@@ -92,10 +92,10 @@ while True:
         for j in range(len(playerList)):
             print(f"{playerList[j].name} is at x{playerList[j].playerX}  y{playerList[j].playerY}")
         print('')
-        targetX = int(input("Enter x coordinate: "))
-        targetY = int(input("Enter y coordinate: "))
-        targetxList.append(targetX)
-        targetyList.append(targetY)
+        playerList[i].targetX = int(input("Enter x coordinate: "))
+        playerList[i].targetY = int(input("Enter y coordinate: "))
+        targetxList.append(playerList[i].targetX)
+        targetyList.append(playerList[i].targetY)
         print('')
         if playerList[i].choice in elementList:
             playerList[i].chakra -= 10
@@ -103,8 +103,6 @@ while True:
 
     # turn execution
     tempList = []
-    tempTarxList = []
-    tempTaryList = []
     for e in range(len(playerList)):
         if playerList[e].health <= 0:
             print(f"{playerList[e].name} is dead and can no longer play...")
@@ -113,24 +111,11 @@ while True:
             continue
 
         tempList.clear()
-        tempTaryList.clear()
-        tempTarxList.clear()
-        playerPosX = playerList[e].playerX
-        playerPosY = playerList[e].playerY
-        playerTarX = targetxList[e]
-        playerTarY = targetyList[e]
-        if coords[playerTarX][playerTarY] is not None:
-            tempList.append(coords[playerTarX][playerTarY])
-            tempTarxList.append(tempList[0].targetX)
-            tempTaryList.append(tempList[0].targetY)
-            # more than problematic fix this you can do it easy trust
-            tempTarX = tempTarxList[0]
-            tempTarY = tempTaryList[0]
-            if coords[tempTarX][tempTarY] == coords[playerPosX][playerPosY]:
-                tempList[0].tired = True
-                print(tempList[0].tired)
 
-            print(tempList[0].tired)
+        if coords[playerList[e].targetX][playerList[e].targetY] is not None:
+            tempList.append(coords[playerList[e].targetX][playerList[e].targetY])
+            if coords[tempList[0].targetX][tempList[0].targetY] == coords[playerList[e].playerX][playerList[e].playerY]:
+                tempList[0].tired = True
 
             if not playerList[e].tired:
 
@@ -192,6 +177,7 @@ while True:
 
             elif playerList[e].tired:
                 print(f"{playerList[e].name} is too tired to continue this fight for now.")
+                print('')
 
         else:
             print('you missed!')
