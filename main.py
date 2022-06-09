@@ -77,17 +77,31 @@ global playuhs
 Shinobi.setplayers()
 Shinobi.placeplayers()
 # game loop
-while True:
+running = True
+while running:
     elementString = "(water) (earth) (fire) (wind) (lightning) (attack) (block) (dodge) (counter) (guard " \
                     "break) (summon)"
     # turn system
     for i in range(len(playerList)):
+        if playerList[i].health <= 0:
+            print(f"It seems {playerList[i].name} has died in combat and can no longer fight...")
+            print('')
+            playerList.remove(playerList[i])
+            if len(playerList) == 1:
+                print('game over')
+                print(f"{playerList[0].name} has won the match!")
+                running = False
+                exit(0)
+            continue
         playerList[i].tired = False
         print(playerList[i].name + f"'s turn")
         print(f"You have {playerList[i].chakra} chakra")
         print("Choose your action!")
         print(elementString)
         playerList[i].choice = (input("enter here: ").strip())
+        if playerList[i].choice == "move":
+            # moving not added
+            pass
         print("Where do you want to attack?")
         for j in range(len(playerList)):
             print(f"{playerList[j].name} is at x{playerList[j].playerX}  y{playerList[j].playerY}")
@@ -96,20 +110,22 @@ while True:
         playerList[i].targetY = int(input("Enter y coordinate: "))
         targetxList.append(playerList[i].targetX)
         targetyList.append(playerList[i].targetY)
+
+        # add a check to see if attack is out of range
+
         print('')
         if playerList[i].choice in elementList:
-            playerList[i].chakra -= 10
+            if playerList[i].chakra <= 0:
+                print('Not enough chakra')
+                playerList[i].choice = "block"
+                continue
+            else:
+                playerList[i].chakra -= 10
         print('')
 
     # turn execution
     tempList = []
     for e in range(len(playerList)):
-        if playerList[e].health <= 0:
-            print(f"{playerList[e].name} is dead and can no longer play...")
-            print('')
-            playerList.pop(playerList[e])
-            continue
-
         tempList.clear()
 
         if coords[playerList[e].targetX][playerList[e].targetY] is not None:
@@ -163,7 +179,7 @@ while True:
 
                 # nobody won
                 else:
-                    if tempList[0].choice == "block" and playerList[e].choice == "block":
+                    if tempList[0].choice and playerList[e].choice == "block":
                         print("Both Shinobi blocked so nothing happened!")
                     else:
                         playerList[e].health -= 10
