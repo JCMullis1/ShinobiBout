@@ -1,11 +1,10 @@
+from maindir.jutsufile import *
 # battle field creation using matrix
 bfSize = int(input('How big shall the battlefield be? The area will be your input squared: '))
 print('')
 coords = [[None] * bfSize for _ in range(bfSize)]
 print(coords)
 
-targetxList = []
-targetyList = []
 playerList = []
 elementList = ["water", "fire", "wind" "lightning", "earth"]
 
@@ -19,10 +18,11 @@ actiondict = {
     "block": ["attack", "counter"],
     "attack": ["guard break", "dodge"],
     "dodge": ["water", "fire", "wind", "lightning", "earth"],
-    "guard break": ["counter", "block", "dodge"]
+    "guard break": ["counter", "block", "dodge"],
+    "move": ["block", "dodge"]
 }
 
-
+print(fireball)
 # defining players
 class Shinobi:
     def __init__(self, name=str, element=str, health=int, chakra=int, playerX=int, playerY=int, targetX=int,
@@ -72,6 +72,12 @@ class Shinobi:
             print('')
             playID += 1
 
+# class for jutsu
+class Jutsu:
+    def __init__(self, dictkey=str, damage=int, atrange=int):
+        self.dictkey = dictkey
+        self.damage = damage
+        self.atrange = atrange
 
 global playuhs
 Shinobi.setplayers()
@@ -79,10 +85,10 @@ Shinobi.placeplayers()
 # game loop
 running = True
 while running:
-    elementString = "(water) (earth) (fire) (wind) (lightning) (attack) (block) (dodge) (counter) (guard " \
-                    "break) (summon)"
+    elementString: str = "(water) (earth) (fire) (wind) (lightning) (attack) (block) (dodge) (counter) (guard break) (summon) (move)"
     # turn system
     for i in range(len(playerList)):
+        # player death and game over check
         if playerList[i].health <= 0:
             print(f"It seems {playerList[i].name} has died in combat and can no longer fight...")
             print('')
@@ -93,25 +99,35 @@ while running:
                 running = False
                 exit(0)
             continue
+
         playerList[i].tired = False
         print(playerList[i].name + f"'s turn")
         print(f"You have {playerList[i].chakra} chakra")
         print("Choose your action!")
         print(elementString)
-        playerList[i].choice = (input("enter here: ").strip())
+        playerList[i].choice = str(input("enter here: ").strip())
         if playerList[i].choice == "move":
-            # moving not added
-            pass
+            a = int(input("How many units do you want to move?: "))
+            print("Which direction?")
+            print("(up) (down) (left) (right)")
+            d = int(input("enter here: "))
+            if d == "up":
+                playerList[i].playerY += a
+            if d == "down":
+                playerList[i].playerY -= a
+            if d == "right":
+                playerList[i].playerX += a
+            if d == "left":
+                playerList[i].playerX -= a
         print("Where do you want to attack?")
         for j in range(len(playerList)):
             print(f"{playerList[j].name} is at x{playerList[j].playerX}  y{playerList[j].playerY}")
         print('')
         playerList[i].targetX = int(input("Enter x coordinate: "))
         playerList[i].targetY = int(input("Enter y coordinate: "))
-        targetxList.append(playerList[i].targetX)
-        targetyList.append(playerList[i].targetY)
-
-        # add a check to see if attack is out of range
+        if playerList[i].playerX - playerList[i].targetX >= 3 and playerList[i].playerY - playerList[i].targetY >= 3:
+            pass
+            # add a check to see if attack is out of range
 
         print('')
         if playerList[i].choice in elementList:
@@ -198,4 +214,3 @@ while running:
         else:
             print('you missed!')
             continue
-

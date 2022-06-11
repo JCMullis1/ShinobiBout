@@ -1,3 +1,4 @@
+from maindir import *
 # battle field creation using matrix
 bfSize = int(input('How big shall the battlefield be? The area will be your input squared: '))
 print('')
@@ -22,7 +23,7 @@ actiondict = {
     "guard break": ["counter", "block", "dodge"]
 }
 
-
+print()
 # defining players
 class Shinobi:
     def __init__(self, name=str, element=str, health=int, chakra=int, playerX=int, playerY=int, targetX=int,
@@ -72,6 +73,12 @@ class Shinobi:
             print('')
             playID += 1
 
+# class for jutsu
+class Jutsu:
+    def __init__(self, dictkey=str, damage=int, atrange=int):
+        self.dictkey = dictkey
+        self.damage = damage
+        self.atrange = atrange
 
 global playuhs
 Shinobi.setplayers()

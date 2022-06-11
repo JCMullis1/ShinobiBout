@@ -33,3 +33,7 @@ make more than 2 players per game work(finished
 --
 finish the alpha version of the game(started
 --
+add moving(started
+--
+add proximity fighting(not started
+--
