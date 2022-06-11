@@ -1,4 +1,4 @@
-from maindir import *
+
 # battle field creation using matrix
 bfSize = int(input('How big shall the battlefield be? The area will be your input squared: '))
 print('')

@@ -1,4 +1,5 @@
 from maindir.jutsufile import *
+
 # battle field creation using matrix
 bfSize = int(input('How big shall the battlefield be? The area will be your input squared: '))
 print('')
@@ -22,7 +23,6 @@ actiondict = {
     "move": ["block", "dodge"]
 }
 
-print(fireball)
 # defining players
 class Shinobi:
     def __init__(self, name=str, element=str, health=int, chakra=int, playerX=int, playerY=int, targetX=int,
@@ -85,7 +85,8 @@ Shinobi.placeplayers()
 # game loop
 running = True
 while running:
-    elementString: str = "(water) (earth) (fire) (wind) (lightning) (attack) (block) (dodge) (counter) (guard break) (summon) (move)"
+    elementString: str = "(water) (earth) (fire) (wind) (lightning) (attack) (block) (dodge) (counter) (guard break) " \
+                         "(summon) (move)"
     # turn system
     for i in range(len(playerList)):
         # player death and game over check
@@ -102,15 +103,17 @@ while running:
 
         playerList[i].tired = False
         print(playerList[i].name + f"'s turn")
-        print(f"You have {playerList[i].chakra} chakra")
-        print("Choose your action!")
-        print(elementString)
+        print(f'''
+        You have {playerList[i].chakra} chakra
+        Choose your action!
+        {elementString}
+        ''')
         playerList[i].choice = str(input("enter here: ").strip())
         if playerList[i].choice == "move":
             a = int(input("How many units do you want to move?: "))
             print("Which direction?")
             print("(up) (down) (left) (right)")
-            d = int(input("enter here: "))
+            d = str(input("enter here: "))
             if d == "up":
                 playerList[i].playerY += a
             if d == "down":
@@ -120,14 +123,14 @@ while running:
             if d == "left":
                 playerList[i].playerX -= a
         print("Where do you want to attack?")
+        print('')
         for j in range(len(playerList)):
             print(f"{playerList[j].name} is at x{playerList[j].playerX}  y{playerList[j].playerY}")
-        print('')
         playerList[i].targetX = int(input("Enter x coordinate: "))
         playerList[i].targetY = int(input("Enter y coordinate: "))
         if playerList[i].playerX - playerList[i].targetX >= 3 and playerList[i].playerY - playerList[i].targetY >= 3:
             pass
-            # add a check to see if attack is out of range
+                # add a check to see if attack is out of range
 
         print('')
         if playerList[i].choice in elementList:
@@ -137,80 +140,78 @@ while running:
                 continue
             else:
                 playerList[i].chakra -= 10
-        print('')
+            print('')
 
-    # turn execution
-    tempList = []
-    for e in range(len(playerList)):
-        tempList.clear()
+        # turn execution
+        tempList = []
+        for e in range(len(playerList)):
+            tempList.clear()
+            if coords[playerList[e].targetX][playerList[e].targetY] is not None:
+                tempList.append(coords[playerList[e].targetX][playerList[e].targetY])
+                if coords[tempList[0].targetX][tempList[0].targetY] == coords[playerList[e].playerX][playerList[e].playerY]:
+                    tempList[0].tired = True
 
-        if coords[playerList[e].targetX][playerList[e].targetY] is not None:
-            tempList.append(coords[playerList[e].targetX][playerList[e].targetY])
-            if coords[tempList[0].targetX][tempList[0].targetY] == coords[playerList[e].playerX][playerList[e].playerY]:
-                tempList[0].tired = True
+                if not playerList[e].tired:
 
-            if not playerList[e].tired:
+                    # attacker won
+                    if tempList[0].choice in actiondict[playerList[e].choice]:
+                        if playerList[e].choice == playerList[e].element:
+                            tempList[0].health -= 20
+                            print(f"{playerList[e].name} has won the bout!")
+                            print(
+                                f"{playerList[e].name} chose {playerList[e].choice}, and {tempList[0].name} chose {tempList[0].choice}!")
+                            print(
+                                f"{playerList[e].name} is now at {playerList[e].health}, and {tempList[0].name} is at {tempList[0].health}!")
+                            print('')
 
-                # attacker won
-                if tempList[0].choice in actiondict[playerList[e].choice]:
-                    if playerList[e].choice == playerList[e].element:
-                        tempList[0].health -= 20
-                        print(f"{playerList[e].name} has won the bout!")
-                        print(
+                        else:
+                            tempList[0].health -= 10
+                            print(f'''
+                            {playerList[e].name} has won the bout!
                             f"{playerList[e].name} chose {playerList[e].choice}, and {tempList[0].name} chose {tempList[0].choice}!")
-                        print(
                             f"{playerList[e].name} is now at {playerList[e].health}, and {tempList[0].name} is at {tempList[0].health}!")
-                        print('')
+                            ''')
+                    # attacker won
 
+                    # defender won
+                    elif playerList[e].choice in actiondict[tempList[0].choice]:
+                        if tempList[0].choice == tempList[0].element:
+                            playerList[e].health -= 20
+                            print(f"{tempList[0].name} has won the bout!")
+                            print(
+                                f"{tempList[0].name} chose {tempList[0].choice}, and {playerList[e].name} chose {playerList[e].choice}!")
+                            print(
+                                f"{tempList[0].name} is now at {tempList[0].health}, and {playerList[e].name} is at {playerList[e].health}!")
+                            print('')
+
+                        else:
+                            playerList[e].health -= 10
+                            print(f"{tempList[0].name} has won the bout!")
+                            print(
+                                f"{tempList[0].name} chose {tempList[0].choice}, and {playerList[e].name} chose {playerList[e].choice}!")
+                            print(
+                                f"{tempList[0].name} is now at {tempList[0].health}, and {playerList[e].name} is at {playerList[e].health}!")
+                            print('')
+                    # defender won
+
+                    # nobody won
                     else:
-                        tempList[0].health -= 10
-                        print(f"{playerList[e].name} has won the bout!")
-                        print(
-                            f"{playerList[e].name} chose {playerList[e].choice}, and {tempList[0].name} chose {tempList[0].choice}!")
-                        print(
-                            f"{playerList[e].name} is now at {playerList[e].health}, and {tempList[0].name} is at {tempList[0].health}!")
-                        print('')
-                # attacker won
+                        if tempList[0].choice and playerList[e].choice == "block":
+                            print("Both Shinobi blocked so nothing happened!")
+                        else:
+                            playerList[e].health -= 10
+                            tempList[0].health -= 10
+                            print("The bout ended in stalemate!")
+                            print(
+                                f"{playerList[e].name} chose {playerList[e].choice}, and {tempList[0].name} chose {tempList[0].choice}!")
+                            print(
+                                f"{tempList[0].name} is now at {tempList[0].health}, and {playerList[e].name} is at {playerList[e].health}!")
+                    # nobody won
 
-                # defender won
-                elif playerList[e].choice in actiondict[tempList[0].choice]:
-                    if tempList[0].choice == tempList[0].element:
-                        playerList[e].health -= 20
-                        print(f"{tempList[0].name} has won the bout!")
-                        print(
-                            f"{tempList[0].name} chose {tempList[0].choice}, and {playerList[e].name} chose {playerList[e].choice}!")
-                        print(
-                            f"{tempList[0].name} is now at {tempList[0].health}, and {playerList[e].name} is at {playerList[e].health}!")
-                        print('')
+                elif playerList[e].tired:
+                    print(f"{playerList[e].name} is too tired to continue this fight for now.")
+                    print('')
 
-                    else:
-                        playerList[e].health -= 10
-                        print(f"{tempList[0].name} has won the bout!")
-                        print(
-                            f"{tempList[0].name} chose {tempList[0].choice}, and {playerList[e].name} chose {playerList[e].choice}!")
-                        print(
-                            f"{tempList[0].name} is now at {tempList[0].health}, and {playerList[e].name} is at {playerList[e].health}!")
-                        print('')
-                # defender won
-
-                # nobody won
-                else:
-                    if tempList[0].choice and playerList[e].choice == "block":
-                        print("Both Shinobi blocked so nothing happened!")
-                    else:
-                        playerList[e].health -= 10
-                        tempList[0].health -= 10
-                        print("The bout ended in stalemate!")
-                        print(
-                            f"{playerList[e].name} chose {playerList[e].choice}, and {tempList[0].name} chose {tempList[0].choice}!")
-                        print(
-                            f"{tempList[0].name} is now at {tempList[0].health}, and {playerList[e].name} is at {playerList[e].health}!")
-                # nobody won
-
-            elif playerList[e].tired:
-                print(f"{playerList[e].name} is too tired to continue this fight for now.")
-                print('')
-
-        else:
-            print('you missed!')
-            continue
+            else:
+                print('you missed!')
+                continue
