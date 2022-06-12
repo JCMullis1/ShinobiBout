@@ -27,13 +27,13 @@ add the remaining actions to the game(finished temporarily
 --
 make the summon system work(not started
 --
-make the chakra cost system(finished temporarily
+make the chakra cost system(finished
 --
 make more than 2 players per game work(finished
 --
-finish the alpha version of the game(started
+finish the alpha version of the game(finished
 --
-add moving(started
+add moving(finished
 --
 add proximity fighting(not started
 --

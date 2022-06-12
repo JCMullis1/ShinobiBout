@@ -4,7 +4,6 @@ from maindir.jutsufile import *
 bfSize = int(input('How big shall the battlefield be? The area will be your input squared: '))
 print('')
 coords = [[None] * bfSize for _ in range(bfSize)]
-print(coords)
 
 jutsuList1 = []
 playerList = []
@@ -24,13 +23,14 @@ actiondict = {
     "move": ["block", "dodge"]
 }
 
-move1 = Jutsu("move", "move", str, 0, 3)
+attack1 = Jutsu("attack", "attack", str, 10, 1)
+move1 = Jutsu("move", "move", str, 0, 10000)
 guardbreak1 = Jutsu("guard break", "guard break", str, 10, 1)
 counter1 = Jutsu("counter", "counter", str, 10, 1)
 dodge1 = Jutsu("dodge", "dodge", str, 10, 1)
 block1 = Jutsu("block", "block", str, 10, 1)
 
-rlist = [move1, block1, guardbreak1, counter1, dodge1]
+rlist = [move1, block1, guardbreak1, counter1, dodge1, attack1]
 
 # defining players
 class Shinobi:
@@ -119,7 +119,7 @@ while running:
         print(f'''
     {playerList[i].name}'s turn
         You have {playerList[i].chakra} chakra
-            Choose your action!
+               Choose your action!
         ''')
         for g in range(len(playerList[i].jutsu)):
             print(f"{playerList[i].jutsu[g].name}")
@@ -130,8 +130,10 @@ while running:
 
         if playerList[i].choice.dictkey == "move":
             a = int(input("How many units do you want to move?: ").strip())
+            if a > 3:
+                a = 3
             print("Which direction?")
-            print("(up ~ y + input) (down ~ y - input) (left ~ x - input) (right ~ x + input)")
+            print("(up~y + input) (down~y - input) (left~x - input) (right~x + input)")
             d = str(input("enter here: ")).strip()
             if d == "up":
                 playerList[i].playerY += a
@@ -152,10 +154,13 @@ while running:
             print(f"{playerList[j].name} is at x{playerList[j].playerX}  y{playerList[j].playerY}")
         playerList[i].targetX = int(input("Enter x coordinate: ").strip())
         playerList[i].targetY = int(input("Enter y coordinate: ").strip())
-        if playerList[i].playerX - playerList[i].targetX >= playerList[i].choice.atrange and playerList[i].playerY - playerList[i].targetY >= playerList[i].choice.atrange:
-            print('this works')
-            pass
-        # add a check to see if attack is out of range
+        if playerList[i].playerX - playerList[i].targetX > playerList[i].choice.atrange:
+            playerList[i].targetX = int(playerList[i].playerX)
+            playerList[i].targetY = int(playerList[i].playerY)
+
+        elif playerList[i].playerY - playerList[i].targetY > playerList[i].choice.atrange:
+            playerList[i].targetX = int(playerList[i].playerX)
+            playerList[i].targetY = int(playerList[i].playerY)
 
         print('')
         if playerList[i].choice.dictkey in elementList and playerList[i].chakra >= float(playerList[i].choice.damage*.9):
@@ -165,6 +170,8 @@ while running:
             playerList[i].choice = playerList[i].jutsu[1]
             # changes player action to block if they don't have enough chakra
         print('')
+        if playerList[i].targetX == playerList[i].playerX and playerList[i].targetY == playerList[i].playerY:
+            playerList[i].tired = True
 
         # turn execution
     tempList = []
