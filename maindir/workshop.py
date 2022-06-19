@@ -5,32 +5,44 @@ bfSize = int(input('How big shall the battlefield be? The area will be your inpu
 print('')
 coords = [[None] * bfSize for _ in range(bfSize)]
 
-jutsuList1 = []
 playerList = []
 elementList = ["water", "fire", "wind" "lightning", "earth"]
 
-actiondict = {
-    "water": ["fire", "attack", "block", "counter", "guard break"],
-    "fire": ["wind", "attack", "block", "counter", "guard break"],
-    "wind": ["lightning", "attack", "block", "counter", "guard break"],
-    "lightning": ["earth", "attack", "block", "counter", "guard break"],
-    "earth": ["water", "attack", "block", "counter", "guard break"],
-    "counter": ["attack", "dodge"],
-    "block": ["attack", "counter"],
-    "attack": ["guard break", "dodge"],
-    "dodge": ["water", "fire", "wind", "lightning", "earth"],
-    "guard break": ["counter", "block", "dodge"],
-    "move": ["block", "dodge"]
+racedict = {
+    "serpent": ["slug"],
+    "toad": ["serpent"],
+    "slug": ["toad"],
+    "monkey": ["serpent", "hound"],
+    "hound": ["toad", "hawk"],
+    "hawk": ["slug", "monkey"]
 }
 
-attack1 = Jutsu("attack", "attack", str, 10, 1)
-move1 = Jutsu("move", "move", str, 0, 10000)
-guardbreak1 = Jutsu("guard break", "guard break", str, 10, 1)
-counter1 = Jutsu("counter", "counter", str, 10, 1)
-dodge1 = Jutsu("dodge", "dodge", str, 10, 1)
-block1 = Jutsu("block", "block", str, 10, 1)
+# keys are actions and the values are the actions that they defeat
+actiondict = {
+    "water": ["fire", "attack", "block", "counter", "guard break", "summon", "move", "nothing"],
+    "fire": ["wind", "attack", "block", "counter", "guard break", "summon", "move", "nothing"],
+    "wind": ["lightning", "attack", "block", "counter", "guard break", "summon", "move", "nothing"],
+    "lightning": ["earth", "attack", "block", "counter", "guard break", "summon", "move", "nothing"],
+    "earth": ["water", "attack", "block", "counter", "guard break", "summon", "move", "nothing"],
+    "counter": ["attack", "dodge", "nothing"],
+    "block": ["attack", "counter"],
+    "attack": ["guard break", "dodge", "summon", "nothing"],
+    "dodge": ["water", "fire", "wind", "lightning", "earth"],
+    "guard break": ["counter", "block", "dodge", "nothing"],
+    "move": ["block", "dodge"],
+    "summon": ["nothing"],
+    "nothing": [""]
+}
 
-rlist = [move1, block1, guardbreak1, counter1, dodge1, attack1]
+attack1 = Jutsu("attack", "attack", str, 10, 2)
+move1 = Jutsu("move", "move", str, 0, 10000)
+guardbreak1 = Jutsu("guard break", "guard break", str, 10, 2)
+counter1 = Jutsu("counter", "counter", str, 10, 2)
+dodge1 = Jutsu("dodge", "dodge", str, 10, 2)
+block1 = Jutsu("block", "block", str, 10, 2)
+summon1 = Jutsu("summon", "summon", str, 0, 3)
+
+rlist = [move1, block1, guardbreak1, counter1, dodge1, attack1, summon1]
 
 # defining players
 class Shinobi:
@@ -59,7 +71,7 @@ class Shinobi:
             playerList[ele].playerX = x
             playerList[ele].playerY = y
             x += 1
-            if x >= bfSize:
+            if x == bfSize:
                 x -= bfSize
                 y += 1
             if y > bfSize:
@@ -69,8 +81,8 @@ class Shinobi:
     # this just defines the players used in the demo of the game
     @staticmethod
     def setplayers():
-        global player, playuhs
-        playuhs = int((input('How many players will be fighting today?: ')))
+        global player, playuhs, playhealth, playchakra
+        playuhs = int(input('How many players will be fighting today?: '))
         playhealth = int(input('How much health will each player have?: '))
         playchakra = int(input('How much chakra will each player have?: '))
         print('')
@@ -128,7 +140,21 @@ while running:
             if x == playerList[i].jutsu[y].name:
                 playerList[i].choice = playerList[i].jutsu[y]
 
+        if playerList[i].choice.dictkey == "summon":
+            print('')
+            summon = f"summon{int(len(playerList)+1)}"
+            globals()[summon] = Summon(race=str(input('Enter summon race: ')), name=str(input('Enter summon name: ')), element=str(input('Enter summon element: ')),
+                                        health=playhealth, chakra=playchakra, jutsu=list(rlist),
+                                        bline=str(input('Enter bloodline: ')))
+            playerList.append(globals()[summon])
+            for juts in range(len(jutsuList)):
+                if playerList[len(playerList)-1].bline == jutsuList[juts].bloodline:
+                    playerList[len(playerList)-1].jutsu.append(jutsuList[juts])
+            playerList[len(playerList)-1].jutsu.remove(summon1)
+
         if playerList[i].choice.dictkey == "move":
+            prevX = playerList[i].playerX
+            prevY = playerList[i].playerY
             a = int(input("How many units do you want to move?: ").strip())
             if a > 3:
                 a = 3
@@ -147,6 +173,7 @@ while running:
                 playerList[i].playerX = 0
             if playerList[i].playerY < 0:
                 playerList[i].playerY = 0
+            coords[prevX][prevY] = None
 
         print("Where do you want to attack?")
         print('')
@@ -154,11 +181,16 @@ while running:
             print(f"{playerList[j].name} is at x{playerList[j].playerX}  y{playerList[j].playerY}")
         playerList[i].targetX = int(input("Enter x coordinate: ").strip())
         playerList[i].targetY = int(input("Enter y coordinate: ").strip())
-        if playerList[i].playerX - playerList[i].targetX > playerList[i].choice.atrange:
-            playerList[i].targetX = int(playerList[i].playerX)
-            playerList[i].targetY = int(playerList[i].playerY)
 
-        elif playerList[i].playerY - playerList[i].targetY > playerList[i].choice.atrange:
+        if playerList[i].choice.dictkey == "summon":
+            playerList[int(len(playerList)-1)].playerX = playerList[i].targetX
+            playerList[int(len(playerList)-1)].playerY = playerList[i].targetY
+            playerList[int(len(playerList)-1)].targetX = playerList[i].targetX
+            playerList[int(len(playerList)-1)].targetY = playerList[i].targetY
+            playerList[int(len(playerList)-1)].choice = Jutsu("nothing", "nothing", str, 0, 100)
+            coords[playerList[i].targetX][playerList[i].targetY] = playerList[int(len(playerList)-1)]
+
+        if playerList[i].playerY - playerList[i].targetY > playerList[i].choice.atrange:
             playerList[i].targetX = int(playerList[i].playerX)
             playerList[i].targetY = int(playerList[i].playerY)
 
@@ -177,6 +209,10 @@ while running:
     tempList = []
     for e in range(len(playerList)):
         tempList.clear()
+
+        if playerList[e].choice.dictkey not in actiondict:
+            continue
+
         if coords[playerList[e].targetX][playerList[e].targetY] is not None:
             tempList.append(coords[playerList[e].targetX][playerList[e].targetY])
             if coords[tempList[0].targetX][tempList[0].targetY] == coords[playerList[e].playerX][playerList[e].playerY]:

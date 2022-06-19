@@ -1,4 +1,5 @@
 jutsuList = []
+
 class Jutsu:
     def __init__(self, name=str, dictkey=str, bloodline=str, damage=int, atrange=int, chakracost=float):
         self.name = name
@@ -7,6 +8,23 @@ class Jutsu:
         self.damage = damage
         self.atrange = atrange
         self.chakracost = damage*.9
+
+class Summon:
+    def __init__(self, race=str, name=str, element=str, health=int, chakra=int, playerX=int, playerY=int, targetX=int,
+                 targetY=int, tired=False, jutsu=list, bline=str, choice=Jutsu):
+        self.race = race
+        self.name = name
+        self.element = element
+        self.health = health
+        self.chakra = chakra
+        self.playerX = playerX
+        self.playerY = playerY
+        self.targetX = targetX
+        self.targetY = targetY
+        self.tired = tired
+        self.jutsu = jutsu
+        self.bline = bline
+        self.choice = choice
 
 # jutsu list used for the main file
 fireball1 = Jutsu("fireball", "fire", "land of fire", 20, 3)
