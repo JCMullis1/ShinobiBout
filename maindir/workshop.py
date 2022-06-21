@@ -170,18 +170,33 @@ while running:
 
     # turn system
     for i in range(len(playerList)):
+        # context actions
         for o in range(len(playerList)):
-            if playerList[o].context == "move":
-                print(f'{playerList[o].name} is getting ready to move!')
-            elif playerList[o].context == "defend":
-                print(f'{playerList[o].name} is preparing a defense!')
-            elif playerList[o].context == "strike":
-                print(f'{playerList[o].name} is preparing an attack!')
-            elif playerList[o].context == "chakra":
-                print(f'{playerList[o].name} is weaving hand signs!')
-            elif playerList[o].context == "nothing":
-                print(f'{playerList[o].name} hasn\'t done anything yet!')
-            print('')
+            if int(playerList[i].playerX) > int(playerList[o].playerX):
+                a = int(playerList[i].playerX)
+                b = int(playerList[o].playerX)
+            else:
+                a = int(playerList[o].playerX)
+                b = int(playerList[i].playerX)
+            if int(playerList[i].playerY) > int(playerList[o].playerY):
+                c = int(playerList[i].playerY)
+                d = int(playerList[o].playerY)
+            else:
+                c = int(playerList[o].playerY)
+                d = int(playerList[i].playerY)
+
+            if a - b <= 5 or c - d <= 5:
+                if playerList[o].context == "move":
+                    print(f'{playerList[o].name} is getting ready to move!')
+                elif playerList[o].context == "defend":
+                    print(f'{playerList[o].name} is preparing a defense!')
+                elif playerList[o].context == "strike":
+                    print(f'{playerList[o].name} is preparing an attack!')
+                elif playerList[o].context == "chakra":
+                    print(f'{playerList[o].name} is weaving hand signs!')
+                elif playerList[o].context == "nothing":
+                    print(f'{playerList[o].name} hasn\'t done anything yet!')
+                print('')
 
         print(f'''
     {playerList[i].name}'s turn
@@ -254,7 +269,7 @@ while running:
                 c = int(playerList[j].playerY)
                 d = int(playerList[i].playerY)
 
-            if a - b and c - d <= 5:
+            if a - b <= 5 and c - d <= 5:
                 print(f"{playerList[j].name} is at x{playerList[j].playerX}  y{playerList[j].playerY}")
         playerList[i].targetX = int(input("Enter x coordinate: ").strip())
         playerList[i].targetY = int(input("Enter y coordinate: ").strip())

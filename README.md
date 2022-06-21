@@ -1,7 +1,15 @@
 This is ShinobiBout, a text terminal fighting game,
 the objective is to get the enemy's health to hit 0 
 
-current version, alpha version 0.7.1 
+current version, alpha version 0.7.2 
+
+
+//
+NEW TO SHINOBIBOUT:
+    
+    context round ( it prepares you for the actual actions by telling you what the players are getting ready to do
+    
+    proximity player searching ( players must be within 5 meters before it tells you where they are or what they're doing in the context round
 
 //
 READERS GUIDE:
@@ -17,7 +25,7 @@ READERS GUIDE:
 //
 BUGS:
 
-    none currently known as of version alpha 0.7.1
+    none currently known as of version alpha 0.7.2
 
 //
 TODO:
@@ -29,11 +37,11 @@ TODO:
     add weapon system(not started)
 
 //
-SYSTEMS
+SYSTEMS:
 
     this tab will explain how the program works and some of it's funcionality for confused readers
     
-    //FLOWCHART
+    //FLOWCHART:
         Battlefield creation(math expression at the top of the main file)
 
                         |
@@ -71,11 +79,11 @@ SYSTEMS
         
         Top of the game loop(resets loop)
         
-    //AUTO DYNAMIC CLASS GENERATION
+    //AUTO DYNAMIC CLASS GENERATION:
         using input statements I can assign values to a globals() string variable and then append it to a list
         and in doing so I can loop through said list to go through the class instances made in the program without having
         to find a special name or anything similar.
 
-    //WORKSHOP FILE
+    //WORKSHOP FILE:
         This file is just for me to mess around with ideas for the game without messing stuff up permanently but I leave it in the
         repo so others can see the changes I'm working on.
