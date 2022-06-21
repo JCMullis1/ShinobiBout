@@ -59,7 +59,7 @@ guardbreak1 = Jutsu("guard break", "guard break", str, 10, 2)
 counter1 = Jutsu("counter", "counter", str, 10, 2)
 dodge1 = Jutsu("dodge", "dodge", str, 10, 2)
 block1 = Jutsu("block", "block", str, 10, 2)
-summon1 = Jutsu("summon", "summon", str, 0, 3)
+summon1 = Jutsu("summon", "summon", str, 0, 3, 40)
 
 fists1 = Weapon(name="fists", weaponkey="fists", amount=1, damage=10, atrange=2)
 kunai1 = Weapon(name="kunai", weaponkey="kunai", isranged=True, amount=4, damage=16, atrange=4)
@@ -193,12 +193,14 @@ while running:
                 choiceList.append(str(playerList[i].jutsu[g].dictkey))
                 print(playerList[i].jutsu[g].name)
 
-        while playerList[i].choice.dictkey not in choiceList:
+        going = True
+        while going:
             x = str(input("Enter here: ")).strip()
             for y in range(len(playerList[i].jutsu)):
                 if x == playerList[i].jutsu[y].name:
-                    if playerList[i].choice.dictkey in choiceList:
+                    if playerList[i].jutsu[y].dictkey in choiceList:
                         playerList[i].choice = playerList[i].jutsu[y]
+                        going = False
 
         if playerList[i].choice.dictkey == "summon":
             print('')
@@ -211,12 +213,7 @@ while running:
                 if playerList[len(playerList)-1].bline == jutsuList[juts].bloodline:
                     playerList[len(playerList)-1].jutsu.append(jutsuList[juts])
             playerList[len(playerList)-1].jutsu.remove(summon1)
-            playerList[int(len(playerList) - 1)].playerX = playerList[i].targetX
-            playerList[int(len(playerList) - 1)].playerY = playerList[i].targetY
-            playerList[int(len(playerList) - 1)].targetX = playerList[i].targetX
-            playerList[int(len(playerList) - 1)].targetY = playerList[i].targetY
-            playerList[int(len(playerList) - 1)].choice = Jutsu("nothing", "nothing", str, 0, 100)
-            coords[playerList[i].targetX][playerList[i].targetY] = playerList[int(len(playerList) - 1)]
+            playerList[int(len(playerList)-1)].choice = Jutsu("nothing", "nothing", str, 0, 100)
 
         if playerList[i].choice.dictkey == "move":
             prevX = playerList[i].playerX
@@ -248,6 +245,13 @@ while running:
         playerList[i].targetX = int(input("Enter x coordinate: ").strip())
         playerList[i].targetY = int(input("Enter y coordinate: ").strip())
 
+        if playerList[i].choice.dictkey == "summon":
+            coords[playerList[i].targetX][playerList[i].targetY] = playerList[int(len(playerList) - 1)]
+            playerList[int(len(playerList)-1)].playerX = playerList[i].targetX
+            playerList[int(len(playerList)-1)].playerY = playerList[i].targetY
+            playerList[int(len(playerList)-1)].targetX = playerList[i].targetX
+            playerList[int(len(playerList)-1)].targetY = playerList[i].targetY
+
         if playerList[i].playerY - playerList[i].targetY > playerList[i].choice.atrange:
             playerList[i].targetX = int(playerList[i].playerX)
             playerList[i].targetY = int(playerList[i].playerY)
@@ -260,8 +264,9 @@ while running:
             playerList[i].choice = playerList[i].jutsu[1]
             # changes player action to block if they don't have enough chakra
         print('')
-        if playerList[i].targetX == playerList[i].playerX and playerList[i].targetY == playerList[i].playerY:
+        if coords[playerList[i].targetX][playerList[i].targetY] == playerList[i]:
             playerList[i].tired = True
+    # playerList[i].targetX == playerList[i].playerX and playerList[i].targetY == playerList[i].playerY
 
     # turn execution
     tempList = []
@@ -270,10 +275,10 @@ while running:
 
         if playerList[e].choice.dictkey not in actiondict:
             continue
-
+        # coords[playerList[e].playerX][playerList[e].playerY]
         if coords[playerList[e].targetX][playerList[e].targetY] is not None:
             tempList.append(coords[playerList[e].targetX][playerList[e].targetY])
-            if coords[tempList[0].targetX][tempList[0].targetY] == coords[playerList[e].playerX][playerList[e].playerY]:
+            if coords[tempList[0].targetX][tempList[0].targetY] == playerList[e]:
                 tempList[0].tired = True
 
             if not playerList[e].tired:
