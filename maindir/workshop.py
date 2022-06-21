@@ -241,7 +241,21 @@ while running:
         print("Where do you want to attack?")
         print('')
         for j in range(len(playerList)):
-            print(f"{playerList[j].name} is at x{playerList[j].playerX}  y{playerList[j].playerY}")
+            if int(playerList[i].playerX) > int(playerList[j].playerX):
+                a = int(playerList[i].playerX)
+                b = int(playerList[j].playerX)
+            else:
+                a = int(playerList[j].playerX)
+                b = int(playerList[i].playerX)
+            if int(playerList[i].playerY) > int(playerList[j].playerY):
+                c = int(playerList[i].playerY)
+                d = int(playerList[j].playerY)
+            else:
+                c = int(playerList[j].playerY)
+                d = int(playerList[i].playerY)
+
+            if a - b and c - d <= 5:
+                print(f"{playerList[j].name} is at x{playerList[j].playerX}  y{playerList[j].playerY}")
         playerList[i].targetX = int(input("Enter x coordinate: ").strip())
         playerList[i].targetY = int(input("Enter y coordinate: ").strip())
 
