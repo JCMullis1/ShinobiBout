@@ -5,11 +5,16 @@ current version, alpha version 0.7.2
 
 
 //
-NEW TO SHINOBIBOUT:
+NEW TO SHINOBIBOUT 0.7.2:
     
     context round ( it prepares you for the actual actions by telling you what the players are getting ready to do
     
     proximity player searching ( players must be within 5 meters before it tells you where they are or what they're doing in the context round
+
+//
+NEW TO SHINOBIBOUT 0.7.3:
+    
+    added weapons system ( including ranged mechanics
 
 //
 READERS GUIDE:
