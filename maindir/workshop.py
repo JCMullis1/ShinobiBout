@@ -4,8 +4,9 @@ from maindir.classfile import *
 bfSize = int(input('How big shall the battlefield be? The area will be your input squared: '))
 print('')
 coords = [[None] * bfSize for _ in range(bfSize)]
+healthChakra()
 
-global playuhs, players, playchakra, playhealth
+global playuhs, players
 Shinobi.setplayers()
 y = 0
 x = 0
@@ -20,6 +21,32 @@ for ele in range(len(playerList)):
     if y > bfSize:
         print('there is too many players')
         break
+
+
+def whereYouAt():
+    for j in range(len(playerList)):
+        if playerList[i].playerX > playerList[j].playerX:
+            a = int(playerList[i].playerX)
+            b = int(playerList[j].playerX)
+        else:
+            a = int(playerList[j].playerX)
+            b = int(playerList[i].playerX)
+        if int(playerList[i].playerY) > int(playerList[j].playerY):
+            c = int(playerList[i].playerY)
+            d = int(playerList[j].playerY)
+        else:
+            c = int(playerList[j].playerY)
+            d = int(playerList[i].playerY)
+
+        if a - b <= 5 and c - d <= 5:
+            print(f"{playerList[j].name} is at x{playerList[j].playerX}  y{playerList[j].playerY}")
+    playerList[i].targetX = int(input("Enter x coordinate: ").strip())
+    playerList[i].targetY = int(input("Enter y coordinate: ").strip())
+    if playerList[i].playerY - playerList[i].targetY > playerList[i].choice.atrange:
+        playerList[i].targetX = int(playerList[i].playerX)
+        playerList[i].targetY = int(playerList[i].playerY)
+
+
 # game loop
 running = True
 while running:
@@ -100,7 +127,8 @@ while running:
                         if playerList[i].jutsu[y].dictkey == "attack":
                             playerList[i].weapon = playerList[i].jutsu[y]
                             playerList[i].weapon.amount = playerList[i].itamount[playerList[i].weapon.position]
-                            print(f'{playerList[i].name} has {playerList[i].weapon.amount} {playerList[i].weapon.name}.')
+                            print(
+                                f'{playerList[i].name} has {playerList[i].weapon.amount} {playerList[i].weapon.name}.')
                             if playerList[i].weapon.amount <= 0:
                                 print(f'You couldn\'t find {playerList[i].weapon.name} in your inventory.')
                                 playerList[i].weapon = fists1
@@ -118,21 +146,57 @@ while running:
                             going = False
                         going = False
 
+        if playerList[i].choice.dictkey == "transform":
+            print('')
+            form = str(input('What form will you take?'))
+            print('(weapon) (object) (other person)')
+            if form == "weapon":
+                trweaponID = 0
+                rangedBool = False
+                areYouRanged = str(input("Is your weapon transformation ranged? Y/N"))
+                if areYouRanged == "Y":
+                    rangedBool = True
+                weaponType = str(input("""Enter type of weapon:
+                                              (sword) (heavy) (polearm) (kunai) (shuriken) (paper bomb)"""))
+                if weaponType == "sword":
+                    rangeValue = 2
+                elif weaponType == "heavy":
+                    rangeValue = 2
+                elif weaponType == "polearm":
+                    rangeValue = 3
+                elif weaponType == "kunai":
+                    rangeValue = 2
+                elif weaponType == "shuriken":
+                    rangeValue = 5
+                elif weaponType == "paper bomb":
+                    rangeValue = 2
+
+                trweapon = f"trweapon{trweaponID}"
+                globals()[trweapon] = Weapon(name=playerList[i].name,
+                                             buff=str(input("Enter weapon buff: ")),
+                                             buffamount=str(input("Enter buff amount: ")),
+                                             istransform=True,
+                                             chakra=playerList[i].chakra,
+                                             weaponkey=weaponType,
+                                             isranged=rangedBool,
+                                             amount=1,
+                                             damage=int(input("How much damage will the weapon do?: ")),
+                                             atrange=rangeValue,
+                                             position=int(len(amountList)),
+                                             weaponX=playerList[i].playerX,
+                                             weaponY=playerList[i].playerY)
+                print(f"Who do you want to equip yourself to?")
+                whereYouAt()
+                # find the player they chose via coords and equip
+                playerList[i].specaction = True
+
         if playerList[i].choice.dictkey == "summon":
             print('')
-            summon = f"summon{latestPlayer+1}"
-            globals()[summon] = Summon(race=str(input('Enter summon race: ')),
-                                       name=str(input('Enter summon name: ')),
-                                       element=str(input('Enter summon element: ')),
-                                       health=playhealth,
-                                       chakra=playchakra,
-                                       jutsu=list(jlist),
-                                       bline=str(input('Enter bloodline: ')))
-            playerList.append(globals()[summon])
+            summoning()
             for juts in range(len(jutsuList)):
                 if playerList[latestPlayer].bline == jutsuList[juts].bloodline:
                     playerList[latestPlayer].jutsu.append(jutsuList[juts])
-            customjutsu = int(input(f"How many custom jutsu would {latestPlayer.name} like to make?: "))
+            customjutsu = int(input(f"How many custom jutsu would {playerList[latestPlayer].name} like to make?: "))
             for cus in range(customjutsu):
                 jutsuID = 0
                 jutsu = f"jutsu{jutsuID}"
@@ -141,13 +205,15 @@ while running:
                                          bloodline=playerList[latestPlayer].bline,
                                          damage=int(input("Enter damage of jutsu: ")),
                                          atrange=int(input("Enter range of jutsu: ")))
-                globals()[summon].jutsu.append(globals()[jutsu])
+                playerList[latestPlayer].jutsu.append(globals()[jutsu])
                 print('')
                 jutsuID += 1
             playerList[latestPlayer].jutsu.remove(summon1)
             playerList[latestPlayer].choice = Jutsu("nothing", "nothing", str, 0, 100)
-            playerList[latestPlayer].playerX = int(input(f'Where (x) do you want to summon {playerList[latestPlayer].name}: '))
-            playerList[latestPlayer].playerY = int(input(f'Where (y) do you want to summon {playerList[latestPlayer].name}: '))
+            playerList[latestPlayer].playerX = int(
+                input(f'Where (x) do you want to summon {playerList[latestPlayer].name}: '))
+            playerList[latestPlayer].playerY = int(
+                input(f'Where (y) do you want to summon {playerList[latestPlayer].name}: '))
             playerList[latestPlayer].targetX = playerList[latestPlayer].playerX
             playerList[latestPlayer].targetY = playerList[latestPlayer].playerY
             playerList[i].targetX = playerList[latestPlayer].playerX
@@ -184,32 +250,14 @@ while running:
         if playerList[i].specaction != True:
             print("Where do you want to attack?")
             print('')
-            for j in range(len(playerList)):
-                if playerList[i].playerX > playerList[j].playerX:
-                    a = int(playerList[i].playerX)
-                    b = int(playerList[j].playerX)
-                else:
-                    a = int(playerList[j].playerX)
-                    b = int(playerList[i].playerX)
-                if int(playerList[i].playerY) > int(playerList[j].playerY):
-                    c = int(playerList[i].playerY)
-                    d = int(playerList[j].playerY)
-                else:
-                    c = int(playerList[j].playerY)
-                    d = int(playerList[i].playerY)
-
-                if a - b <= 5 and c - d <= 5:
-                    print(f"{playerList[j].name} is at x{playerList[j].playerX}  y{playerList[j].playerY}")
-            playerList[i].targetX = int(input("Enter x coordinate: ").strip())
-            playerList[i].targetY = int(input("Enter y coordinate: ").strip())
-        if playerList[i].playerY - playerList[i].targetY > playerList[i].choice.atrange:
-            playerList[i].targetX = int(playerList[i].playerX)
-            playerList[i].targetY = int(playerList[i].playerY)
+            whereYouAt()
 
         print('')
-        if playerList[i].choice.dictkey in elementList and playerList[i].chakra >= float(playerList[i].choice.damage*.9):
-            playerList[i].chakra -= float(playerList[i].choice.damage*.9)
-        elif playerList[i].choice.dictkey in elementList and playerList[i].chakra < float(playerList[i].choice.damage*.9):
+        if playerList[i].choice.dictkey in elementList and playerList[i].chakra >= float(
+                playerList[i].choice.damage * .9):
+            playerList[i].chakra -= float(playerList[i].choice.damage * .9)
+        elif playerList[i].choice.dictkey in elementList and playerList[i].chakra < float(
+                playerList[i].choice.damage * .9):
             print('Not enough chakra')
             playerList[i].choice = playerList[i].jutsu[1]
             # changes player action to block if they don't have enough chakra
@@ -236,7 +284,7 @@ while running:
                 # attacker won
                 if tempList[0].choice.dictkey in actiondict[playerList[e].choice.dictkey]:
                     if playerList[e].choice.dictkey == playerList[e].element:
-                        tempList[0].health -= float(playerList[e].choice.damage*1.5)
+                        tempList[0].health -= float(playerList[e].choice.damage * 1.5)
                         print(f'''
                         {playerList[e].name} has won the bout!
                         {playerList[e].name} chose {playerList[e].choice.name}, and {tempList[0].name} chose {tempList[0].choice.name}!
@@ -255,7 +303,7 @@ while running:
                 # defender won
                 elif playerList[e].choice.dictkey in actiondict[tempList[0].choice.dictkey]:
                     if tempList[0].choice.dictkey == tempList[0].element:
-                        playerList[e].health -= float(tempList[0].choice.damage*1.5)
+                        playerList[e].health -= float(tempList[0].choice.damage * 1.5)
                         print(f'''
                         {tempList[0].name} has won the bout!
                         {tempList[0].name} chose {tempList[0].choice.name}, and {playerList[e].name} chose {playerList[e].choice.name}!
