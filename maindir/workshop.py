@@ -148,16 +148,17 @@ while running:
 
         if playerList[i].choice.dictkey == "transform":
             print('')
-            form = str(input('What form will you take?'))
             print('(weapon) (object) (other person)')
+            form = str(input('What form will you take?: '))
             if form == "weapon":
                 trweaponID = 0
                 rangedBool = False
-                areYouRanged = str(input("Is your weapon transformation ranged? Y/N"))
+                areYouRanged = str(input("Is your weapon transformation ranged? (Y/N): "))
                 if areYouRanged == "Y":
                     rangedBool = True
-                weaponType = str(input("""Enter type of weapon:
-                                              (sword) (heavy) (polearm) (kunai) (shuriken) (paper bomb)"""))
+                print("""Enter type of weapon
+                (sword) (heavy) (polearm) (kunai) (shuriken) (paper bomb)""")
+                weaponType = str(input("Enter Here: "))
                 if weaponType == "sword":
                     rangeValue = 2
                 elif weaponType == "heavy":
@@ -170,7 +171,7 @@ while running:
                     rangeValue = 5
                 elif weaponType == "paper bomb":
                     rangeValue = 2
-
+                weaponList = []
                 trweapon = f"trweapon{trweaponID}"
                 globals()[trweapon] = Weapon(name=playerList[i].name,
                                              buff=str(input("Enter weapon buff: ")),
@@ -182,12 +183,24 @@ while running:
                                              amount=1,
                                              damage=int(input("How much damage will the weapon do?: ")),
                                              atrange=rangeValue,
-                                             position=int(len(amountList)),
+                                             position=int(len(amountList)-1),
                                              weaponX=playerList[i].playerX,
                                              weaponY=playerList[i].playerY)
+                weaponList.append(globals()[trweapon])
                 print(f"Who do you want to equip yourself to?")
                 whereYouAt()
-                # find the player they chose via coords and equip
+                plaholX = int(playerList[i].targetX)
+                plaholY = int(playerList[i].targetY)
+                if coords[plaholX][plaholY] is not None:
+                    for weapon in range(len(weaponList)):
+                        if weaponList[weapon].name == playerList[i].name:
+                            for v in range(len(playerList)):
+                                if coords[plaholX][plaholY].name == playerList[v].name:
+                                    acceptWeapon = input(str(f"{playerList[v].name} do you want to equip {playerList[i].name} as a weapon? (Y/N): "))
+                                    if acceptWeapon == "Y":
+                                        playerList[v].weapon = weaponList[weapon]
+                                        print(playerList[v].weapon.name)
+                                        playerList[v].jutsu.append(weaponList[weapon])
                 playerList[i].specaction = True
 
         if playerList[i].choice.dictkey == "summon":

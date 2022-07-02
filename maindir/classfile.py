@@ -14,7 +14,7 @@ contextdict = {
     "move": ["move", "dodge"],
     "defend": ["block", "guard break", "counter"],
     "strike": ["attack"],
-    "chakra": ["water", "earth", "fire", "lightning", "wind", "summon"],
+    "chakra": ["water", "earth", "fire", "lightning", "wind", "summon", "transform", "clone", "shadow clone"],
     "nothing": ["nothing"]
 }
 
