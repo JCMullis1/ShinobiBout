@@ -17,7 +17,7 @@ contextdict = {
     "chakra": ["water", "earth", "fire", "lightning", "wind", "summon", "transform", "clone", "shadow clone"],
     "nothing": ["nothing"]
 }
-
+#
 weapondict = {
     "sword": ["heavy", "fists"],
     "heavy": ["polearm", "fists"],

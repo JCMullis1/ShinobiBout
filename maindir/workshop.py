@@ -62,7 +62,7 @@ while running:
                 running = False
                 exit(0)
         continue
-
+#hgfdhgfdhgfdhgd
     # context turn
     for q in range(len(playerList)):
         playerList[q].tired = False
