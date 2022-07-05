@@ -24,6 +24,7 @@ for ele in range(len(playerList)):
 
 
 def whereYouAt():
+    # make more complex to work with transformations next, we can solve some problems that way
     for j in range(len(playerList)):
         if playerList[i].playerX > playerList[j].playerX:
             a = int(playerList[i].playerX)
@@ -62,7 +63,7 @@ while running:
                 running = False
                 exit(0)
         continue
-#hgfdhgfdhgfdhgd
+
     # context turn
     for q in range(len(playerList)):
         playerList[q].tired = False
@@ -156,8 +157,9 @@ while running:
                 areYouRanged = str(input("Is your weapon transformation ranged? (Y/N): "))
                 if areYouRanged == "Y":
                     rangedBool = True
-                print("""Enter type of weapon
-                (sword) (heavy) (polearm) (kunai) (shuriken) (paper bomb)""")
+                else:
+                   print("""Enter type of weapon
+(sword) (heavy) (polearm)""")
                 weaponType = str(input("Enter Here: "))
                 if weaponType == "sword":
                     rangeValue = 2
@@ -173,7 +175,7 @@ while running:
                     rangeValue = 2
                 weaponList = []
                 trweapon = f"trweapon{trweaponID}"
-                globals()[trweapon] = Weapon(name=playerList[i].name,
+                globals()[trweapon] = Weapon(name=f"{playerList[i].name}(weapon)",
                                              buff=str(input("Enter weapon buff: ")),
                                              buffamount=str(input("Enter buff amount: ")),
                                              istransform=True,
@@ -185,23 +187,28 @@ while running:
                                              atrange=rangeValue,
                                              position=int(len(amountList)-1),
                                              weaponX=playerList[i].playerX,
-                                             weaponY=playerList[i].playerY)
+                                             weaponY=playerList[i].playerY,
+                                             ID=playerList[i].ID)
                 weaponList.append(globals()[trweapon])
                 print(f"Who do you want to equip yourself to?")
                 whereYouAt()
-                plaholX = int(playerList[i].targetX)
-                plaholY = int(playerList[i].targetY)
-                if coords[plaholX][plaholY] is not None:
-                    for weapon in range(len(weaponList)):
-                        if weaponList[weapon].name == playerList[i].name:
-                            for v in range(len(playerList)):
-                                if coords[plaholX][plaholY].name == playerList[v].name:
-                                    acceptWeapon = input(str(f"{playerList[v].name} do you want to equip {playerList[i].name} as a weapon? (Y/N): "))
-                                    if acceptWeapon == "Y":
-                                        playerList[v].weapon = weaponList[weapon]
-                                        print(playerList[v].weapon.name)
-                                        playerList[v].jutsu.append(weaponList[weapon])
-                playerList[i].specaction = True
+                if coords[playerList[i].targetX][playerList[i].targetY] is not None:
+                    tempList.append(coords[playerList[i].targetX][playerList[i].targetY])
+                plaHolPlaX = int(playerList[i].playerX)
+                plaHolPlaY = int(playerList[i].playerY)
+                for weapon in range(len(weaponList)):
+                    if weaponList[weapon].ID == playerList[i].ID:
+                        acceptWeapon = input(str(f"{tempList[0].name} do you want to equip {playerList[i].name} as a weapon? (Y/N): "))
+                        if acceptWeapon == "Y":
+                            tempList[0].weapon = weaponList[weapon]
+                            print(tempList[0].weapon.name)
+                            tempList[0].jutsu.append(weaponList[weapon])
+                            playerList.remove(playerList[i])
+                        else:
+                            print('You were returned to your normal state')
+                            coords[plaHolPlaX][plaHolPlaY] = weaponList[weapon]
+                tempList.clear()
+                continue
 
         if playerList[i].choice.dictkey == "summon":
             print('')
@@ -280,7 +287,6 @@ while running:
     # playerList[i].targetX == playerList[i].playerX and playerList[i].targetY == playerList[i].playerY
 
     # turn execution
-    tempList = []
     for e in range(len(playerList)):
         tempList.clear()
 

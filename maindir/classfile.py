@@ -2,6 +2,8 @@ jutsuList = []
 amountList = [4, 6, 3]
 choiceList = []
 playerList = []
+tempList = []
+mapList = list(playerList)
 elementList = ["water", "fire", "wind" "lightning", "earth", "summon"]
 latestPlayer = int(len(playerList)-1)
 def healthChakra():
@@ -59,30 +61,29 @@ actiondict = {
 
 # class for jutsu techniques
 class Jutsu:
-    def __init__(self, name=str, dictkey=str, bloodline=str, damage=int, atrange=int, chakracost=float, total=6):
+    def __init__(self, name=str, dictkey=str, bloodline=str, damage=int, atrange=int, chakracost=float):
         self.name = name
         self.dictkey = dictkey
         self.bloodline = bloodline
         self.damage = damage
         self.atrange = atrange
         self.chakracost = damage*1.2
-        self.total = total
 
 # class for trees boxes and other such objects
 class Entity:
-    def __init__(self, name=int, form=int, entityX=int, entityY=int, istransformed=False, chakra=int, total=6):
+    def __init__(self, name=int, form=int, entityX=int, entityY=int, istransformed=False, chakra=int, ID=int):
         self.name = name
         self.form = form
         self.entityX = entityX
         self.entityY = entityY
         self.istransformed = istransformed
         self.chakra = chakra
-        self.total = total
+        self.ID = ID
 
 # class for weapons from kunai to samehada
 class Weapon:
     def __init__(self, name=str, dictkey="attack", buff=str, buffamount=int, istransform=False, chakra=int,
-                 weaponkey=str, isranged=False, amount=int, damage=int, atrange=int, position=int, weaponX=int, weaponY=int, total=11):
+                 weaponkey=str, isranged=False, amount=int, damage=int, atrange=int, position=int, weaponX=int, weaponY=int, ID=int):
         self.name = name
         self.dictkey = dictkey
         self.buff = buff
@@ -97,11 +98,11 @@ class Weapon:
         self.position = position
         self.weaponX = weaponX
         self.weaponY = weaponY
-        self.total = total
+        self.ID = ID
 
 class Summon:
     def __init__(self, race=str, name=str, element=str, health=int, chakra=int, playerX=int, playerY=int, targetX=int,
-                 targetY=int, tired=False, jutsu=list, bline=str, context=str, weapon=Weapon, choice=Jutsu, total=15):
+                 targetY=int, tired=False, jutsu=list, bline=str, context=str, weapon=Weapon, choice=Jutsu, ID=int):
         self.race = race
         self.name = name
         self.element = element
@@ -117,7 +118,7 @@ class Summon:
         self.context = context
         self.weapon = weapon
         self.choice = choice
-        self.total = total
+        self.ID = ID
 
 attack1 = Jutsu("attack", "attack", str, 10, 2)
 move1 = Jutsu("move", "move", str, 0, 10000)
@@ -147,7 +148,7 @@ jlist = [move1, block1, guardbreak1, counter1, dodge1, summon1, kunai1, shuriken
 
 class Shinobi:
     def __init__(self, name=str, element=str, health=int, chakra=int, playerX=int, playerY=int, targetX=int,
-                 targetY=int, tired=False, specaction=False, jutsu=list, bline=str, context=str, itamount=list, weapon=Weapon, choice=Jutsu, total=15):
+                 targetY=int, tired=False, specaction=False, jutsu=list, bline=str, context=str, itamount=list, weapon=Weapon, choice=Jutsu, ID=int):
         self.name = name
         self.element = element
         self.health = health
@@ -164,7 +165,7 @@ class Shinobi:
         self.itamount = itamount
         self.weapon = weapon
         self.choice = choice
-        self.total = total
+        self.ID = ID
 
     # this just defines the players used in the demo of the game
     @staticmethod
@@ -181,7 +182,8 @@ class Shinobi:
                                         chakra=int(playchakra),
                                         jutsu=list(jlist),
                                         itamount=list(amountList),
-                                        bline=str(input('Enter bloodline: ')))
+                                        bline=str(input('Enter bloodline: ')),
+                                        ID=int(len(playerList)+1))
             playerList.append(globals()[player])
             for juts in range(len(jutsuList)):
                 if playerList[playID].bline == jutsuList[juts].bloodline:
@@ -209,7 +211,8 @@ def summoning():
                                health=playhealth,
                                chakra=playchakra,
                                jutsu=list(jlist),
-                               bline=str(input('Enter bloodline: ')))
+                               bline=str(input('Enter bloodline: ')),
+                               ID=int(len(playerList)+1))
     playerList.append(globals()[summon])
 
 def classFactory(a):
