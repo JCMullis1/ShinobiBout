@@ -26,6 +26,7 @@ for ele in range(len(playerList)):
 def whereYouAt():
     # make more complex to work with transformations next, we can solve some problems that way
     for j in range(len(playerList)):
+        # check for transformed players
         if playerList[i].playerX > playerList[j].playerX:
             a = int(playerList[i].playerX)
             b = int(playerList[j].playerX)
@@ -38,8 +39,9 @@ def whereYouAt():
         else:
             c = int(playerList[j].playerY)
             d = int(playerList[i].playerY)
-
-        if a - b <= 5 and c - d <= 5:
+        if playerList[j].istransform is True:
+            continue
+        elif a - b <= 5 and c - d <= 5:
             print(f"{playerList[j].name} is at x{playerList[j].playerX}  y{playerList[j].playerY}")
     playerList[i].targetX = int(input("Enter x coordinate: ").strip())
     playerList[i].targetY = int(input("Enter y coordinate: ").strip())
@@ -191,6 +193,7 @@ while running:
                                              ID=playerList[i].ID)
                 weaponList.append(globals()[trweapon])
                 print(f"Who do you want to equip yourself to?")
+                playerList[i].istransform = True
                 whereYouAt()
                 if coords[playerList[i].targetX][playerList[i].targetY] is not None:
                     tempList.append(coords[playerList[i].targetX][playerList[i].targetY])
@@ -203,10 +206,13 @@ while running:
                             tempList[0].weapon = weaponList[weapon]
                             print(tempList[0].weapon.name)
                             tempList[0].jutsu.append(weaponList[weapon])
-                            playerList.remove(playerList[i])
+                            playerList[i].transform = True
+                            coords[plaHolPlaX][plaHolPlaY] = None
+                            # fix the playerweapon jutsu list to have special abilities based on being a weapon
                         else:
                             print('You were returned to your normal state')
                             coords[plaHolPlaX][plaHolPlaY] = weaponList[weapon]
+                            playerList[i].istransform = False
                 tempList.clear()
                 continue
 

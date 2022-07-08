@@ -102,7 +102,7 @@ class Weapon:
 
 class Summon:
     def __init__(self, race=str, name=str, element=str, health=int, chakra=int, playerX=int, playerY=int, targetX=int,
-                 targetY=int, tired=False, jutsu=list, bline=str, context=str, weapon=Weapon, choice=Jutsu, ID=int):
+                 targetY=int, tired=False, jutsu=list, bline=str, context=str, istransform=False, weapon=Weapon, choice=Jutsu, ID=int):
         self.race = race
         self.name = name
         self.element = element
@@ -116,6 +116,7 @@ class Summon:
         self.jutsu = jutsu
         self.bline = bline
         self.context = context
+        self.istransform = istransform
         self.weapon = weapon
         self.choice = choice
         self.ID = ID
@@ -148,7 +149,7 @@ jlist = [move1, block1, guardbreak1, counter1, dodge1, summon1, kunai1, shuriken
 
 class Shinobi:
     def __init__(self, name=str, element=str, health=int, chakra=int, playerX=int, playerY=int, targetX=int,
-                 targetY=int, tired=False, specaction=False, jutsu=list, bline=str, context=str, itamount=list, weapon=Weapon, choice=Jutsu, ID=int):
+                 targetY=int, tired=False, specaction=False, jutsu=list, bline=str, context=str, istransform=False, itamount=list, weapon=Weapon, choice=Jutsu, ID=int):
         self.name = name
         self.element = element
         self.health = health
@@ -162,6 +163,7 @@ class Shinobi:
         self.jutsu = jutsu
         self.bline = bline
         self.context = context
+        self.istransform = istransform
         self.itamount = itamount
         self.weapon = weapon
         self.choice = choice
