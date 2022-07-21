@@ -22,32 +22,42 @@ for ele in range(len(playerList)):
         print('there is too many players')
         break
 
-
 def whereYouAt():
     # make more complex to work with transformations next, we can solve some problems that way
     for j in range(len(playerList)):
         # check for transformed players
-        if playerList[i].playerX > playerList[j].playerX:
-            a = int(playerList[i].playerX)
-            b = int(playerList[j].playerX)
-        else:
-            a = int(playerList[j].playerX)
-            b = int(playerList[i].playerX)
-        if int(playerList[i].playerY) > int(playerList[j].playerY):
-            c = int(playerList[i].playerY)
-            d = int(playerList[j].playerY)
-        else:
-            c = int(playerList[j].playerY)
-            d = int(playerList[i].playerY)
-        if playerList[j].istransform is True:
+        if playerList[j].istransform is True or playerList[i].ID == playerList[j].ID:
             continue
-        elif a - b <= 5 and c - d <= 5:
-            print(f"{playerList[j].name} is at x{playerList[j].playerX}  y{playerList[j].playerY}")
+        else:
+            if playerList[i].playerX > playerList[j].playerX:
+                a = int(playerList[i].playerX)
+                b = int(playerList[j].playerX)
+            else:
+                a = int(playerList[j].playerX)
+                b = int(playerList[i].playerX)
+            if int(playerList[i].playerY) > int(playerList[j].playerY):
+                c = int(playerList[i].playerY)
+                d = int(playerList[j].playerY)
+            else:
+                c = int(playerList[j].playerY)
+                d = int(playerList[i].playerY)
+            if playerList[j].istransform is True:
+                continue
+            elif a - b <= 5 and c - d <= 5:
+                print(f"{playerList[j].name} is at x{playerList[j].playerX}  y{playerList[j].playerY}")
     playerList[i].targetX = int(input("Enter x coordinate: ").strip())
     playerList[i].targetY = int(input("Enter y coordinate: ").strip())
     if playerList[i].playerY - playerList[i].targetY > playerList[i].choice.atrange:
         playerList[i].targetX = int(playerList[i].playerX)
         playerList[i].targetY = int(playerList[i].playerY)
+    if playerList[i].targetX >= int(bfSize):
+        playerList[i].targetX = 19
+    if playerList[i].targetY >= int(bfSize):
+        playerList[i].targetY = 19
+    if playerList[i].targetX <= -1:
+        playerList[i].targetX = 0
+    if playerList[i].targetY <= -1:
+        playerList[i].targetY = 0
 
 
 # game loop
@@ -160,8 +170,9 @@ while running:
                 if areYouRanged == "Y":
                     rangedBool = True
                 else:
-                   print("""Enter type of weapon
+                    print("""Enter type of weapon
 (sword) (heavy) (polearm)""")
+                rangeValue = 0
                 weaponType = str(input("Enter Here: "))
                 if weaponType == "sword":
                     rangeValue = 2
@@ -177,7 +188,7 @@ while running:
                     rangeValue = 2
                 weaponList = []
                 trweapon = f"trweapon{trweaponID}"
-                globals()[trweapon] = Weapon(name=f"{playerList[i].name}(weapon)",
+                globals()[trweapon] = Weapon(name=str(input("Enter weapon name: ")),
                                              buff=str(input("Enter weapon buff: ")),
                                              buffamount=str(input("Enter buff amount: ")),
                                              istransform=True,
@@ -187,7 +198,7 @@ while running:
                                              amount=1,
                                              damage=int(input("How much damage will the weapon do?: ")),
                                              atrange=rangeValue,
-                                             position=int(len(amountList)-1),
+                                             position=int(len(amountList) - 1),
                                              weaponX=playerList[i].playerX,
                                              weaponY=playerList[i].playerY,
                                              ID=playerList[i].ID)
@@ -201,14 +212,26 @@ while running:
                 plaHolPlaY = int(playerList[i].playerY)
                 for weapon in range(len(weaponList)):
                     if weaponList[weapon].ID == playerList[i].ID:
-                        acceptWeapon = input(str(f"{tempList[0].name} do you want to equip {playerList[i].name} as a weapon? (Y/N): "))
+                        acceptWeapon = input(
+                            str(f"{tempList[0].name} do you want to equip {playerList[i].name} as a weapon? (Y/N): "))
                         if acceptWeapon == "Y":
                             tempList[0].weapon = weaponList[weapon]
-                            print(tempList[0].weapon.name)
                             tempList[0].jutsu.append(weaponList[weapon])
+                            playerList[i].tempActionList = list(playerList[i].jutsu)
+                            playerList[i].jutsu.clear()
                             playerList[i].transform = True
                             coords[plaHolPlaX][plaHolPlaY] = None
-                            # fix the playerweapon jutsu list to have special abilities based on being a weapon
+                            # action generation
+                            weaponActionsID = 0
+                            weaponActions = f"weaponActions{weaponActionsID}"
+                            globals()[weaponActions] = Jutsu(
+                                name=str(input("Enter name of weapon action: ")),
+                                dictkey="attack",
+                                bloodline=playerList[i].bline,
+                                damage=str(input("How much damage will this action do?: ")),
+                                atrange=rangeValue)
+
+
                         else:
                             print('You were returned to your normal state')
                             coords[plaHolPlaX][plaHolPlaY] = weaponList[weapon]
@@ -288,7 +311,10 @@ while running:
             playerList[i].choice = playerList[i].jutsu[1]
             # changes player action to block if they don't have enough chakra
         print('')
-        if coords[playerList[i].targetX][playerList[i].targetY] == playerList[i]:
+
+        if coords[playerList[i].targetX][playerList[i].targetY] is None:
+            continue
+        elif coords[playerList[i].targetX][playerList[i].targetY].ID == playerList[i].ID:
             playerList[i].tired = True
     # playerList[i].targetX == playerList[i].playerX and playerList[i].targetY == playerList[i].playerY
 

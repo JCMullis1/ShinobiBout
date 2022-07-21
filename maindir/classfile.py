@@ -19,7 +19,7 @@ contextdict = {
     "chakra": ["water", "earth", "fire", "lightning", "wind", "summon", "transform", "clone", "shadow clone"],
     "nothing": ["nothing"]
 }
-#
+
 weapondict = {
     "sword": ["heavy", "fists"],
     "heavy": ["polearm", "fists"],
@@ -80,7 +80,7 @@ class Entity:
         self.chakra = chakra
         self.ID = ID
 
-# class for weapons from kunai to samehada
+# class for weapons like kunai
 class Weapon:
     def __init__(self, name=str, dictkey="attack", buff=str, buffamount=int, istransform=False, chakra=int,
                  weaponkey=str, isranged=False, amount=int, damage=int, atrange=int, position=int, weaponX=int, weaponY=int, ID=int):
@@ -102,7 +102,7 @@ class Weapon:
 
 class Summon:
     def __init__(self, race=str, name=str, element=str, health=int, chakra=int, playerX=int, playerY=int, targetX=int,
-                 targetY=int, tired=False, jutsu=list, bline=str, context=str, istransform=False, weapon=Weapon, choice=Jutsu, ID=int):
+                 targetY=int, tired=False, jutsu=list, bline=str, context=str, istransform=False, weapon=Weapon, tempActionList=list, choice=Jutsu, ID=int):
         self.race = race
         self.name = name
         self.element = element
@@ -118,6 +118,7 @@ class Summon:
         self.context = context
         self.istransform = istransform
         self.weapon = weapon
+        self.tempActionList = tempActionList
         self.choice = choice
         self.ID = ID
 
@@ -131,6 +132,8 @@ summon1 = Jutsu("summon", "summon", str, 0, 3, 40)
 transform1 = Jutsu("transform", "transform", str, 0, 2, 20)
 clone1 = Jutsu("clone", "clone", str, 0, 3, 20)
 shadowclone1 = Jutsu("shadow clone", "shadow clone", str, 0, 3)
+release1 = Jutsu("release transformation")
+release2 = Jutsu("release summon")
 
 
 #struggling right now
@@ -149,7 +152,7 @@ jlist = [move1, block1, guardbreak1, counter1, dodge1, summon1, kunai1, shuriken
 
 class Shinobi:
     def __init__(self, name=str, element=str, health=int, chakra=int, playerX=int, playerY=int, targetX=int,
-                 targetY=int, tired=False, specaction=False, jutsu=list, bline=str, context=str, istransform=False, itamount=list, weapon=Weapon, choice=Jutsu, ID=int):
+                 targetY=int, tired=False, specaction=False, jutsu=list, bline=str, context=str, istransform=False, itamount=list, weapon=Weapon, tempActionList=list, choice=Jutsu, ID=int):
         self.name = name
         self.element = element
         self.health = health
@@ -166,6 +169,7 @@ class Shinobi:
         self.istransform = istransform
         self.itamount = itamount
         self.weapon = weapon
+        self.tempActionList = tempActionList
         self.choice = choice
         self.ID = ID
 
@@ -203,6 +207,7 @@ class Shinobi:
                 print('')
                 jutsuID += 1
             playID += 1
+            globals()[player].tempWeaponList = list(jutsu)
             print('')
 
 def summoning():
